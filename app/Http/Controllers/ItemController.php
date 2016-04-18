@@ -28,7 +28,7 @@ class ItemController extends Controller {
      */
     public function index()
     {
-        $items = Item::whereNull('deleted_at')->get();
+        $items = Item::all();
         return view('item.index')->with('item', $items);
     }
 
@@ -87,7 +87,7 @@ class ItemController extends Controller {
         $items->cost_price = Input::get('cost_price');
         $items->selling_price = Input::get('selling_price');
         $items->save();
-       
+
         Session::flash('message', 'You have successfully updated item');
         return Redirect::to('items');
     }

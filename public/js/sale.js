@@ -3,7 +3,7 @@
 
     app.controller("SearchItemCtrl", [ '$scope', '$http', function($scope, $http) {
         $scope.items = [ ];
-        $http.get('api/item').success(function(data) {
+        $http.get('api/v1/items').success(function(data) {
             $scope.items = data;
         });
         $scope.saletemp = [ ];

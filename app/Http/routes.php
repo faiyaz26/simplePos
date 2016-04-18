@@ -26,4 +26,10 @@ Route::group(['middleware' => 'language'], function()
 
     Route::resource('users', 'UserController');
     Route::resource('items', 'ItemController');
+
+    Route::resource('sales', 'SaleController');
+
+    Route::group(['prefix' => 'api/v1'], function () {
+        Route::resource('items', 'ItemApiController');
+    });
 });
