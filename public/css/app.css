@@ -6231,3 +6231,17 @@ label,
 .checkbox label {
   font-weight: 300;
 }
+
+.item-list{
+    overflow-y: scroll;
+    min-height: 326px;
+  max-height: 652px;
+}
+
+.pos-body{
+    min-height: 400px;
+}
+
+.singleItem:focus{
+  /*  background-color: transparent; */
+}

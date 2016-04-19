@@ -14,7 +14,7 @@
 					{!! Html::ul($errors->all()) !!}
 
 					{!! Form::open(array('url' => 'items', 'files' => false)) !!}
-
+					{!! Form::hidden('username', csrf_token()) !!}
 					<div class="form-group">
 					{!! Form::label('code', trans('item.item_code')) !!}
 					{!! Form::text('code', Input::old('code'), array('class' => 'form-control')) !!}

@@ -10,6 +10,7 @@ return [
 	'customer' => 'Customer',
 	'item_id' => 'Item ID',
 	'item_name' => 'Item Name',
+	'item_code' => "Item Code",
 	'price' => 'Price',
 	'quantity' => 'Quantity',
 	'total' => 'Total',

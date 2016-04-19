@@ -8,9 +8,24 @@
         });
         $scope.saletemp = [ ];
         $scope.newsaletemp = { };
+
+        $scope.invoiceItems = [];
         $http.get('api/saletemp').success(function(data, status, headers, config) {
             $scope.saletemp = data;
         });
+
+        $scope.addToInvoice = function(item){
+            for(i = 0; i < $scope.invoiceItems.length ; i++){
+                if($scope.invoiceItems[i].id == item.id){
+                    $scope.invoiceItems[i].quantity++;
+                   // console.log($scope.invoiceItems);
+                    return;
+                }
+            }
+            item.quantity = 1;
+            $scope.invoiceItems.push(item);
+            return;
+        }
         $scope.addSaleTemp = function(item, newsaletemp) {
             $http.post('api/saletemp', { item_id: item.id, cost_price: item.cost_price, selling_price: item.selling_price }).
             success(function(data, status, headers, config) {

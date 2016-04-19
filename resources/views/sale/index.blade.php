@@ -9,7 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> {{trans('sale.sales_register')}}</div>
 
-            <div class="panel-body">
+            <div class="panel-body pos-body">
 
                 @if (Session::has('message'))
                     <div class="alert alert-success">{{ Session::get('message') }}</div>
@@ -18,9 +18,16 @@
                 
                 <div class="row" ng-controller="SearchItemCtrl">
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 ">
                         <label>{{trans('sale.search_item')}} <input ng-model="searchKeyword" class="form-control"></label>
 
+                        <div class="list-group item-list">
+                            <a href="#" class="list-group-item singleItem" ng-repeat="item in items  | filter: searchKeyword" ng-click="addToInvoice(item)">
+                                <h4 class="list-group-item-heading">@{{item.name}}</h4>
+                                <p class="list-group-item-text">@{{item.description}}</p>
+                            </a>
+                        </div>
+                        <!--
                         <table class="table table-hover">
                             <tr ng-repeat="item in items  | filter: searchKeyword | limitTo:10">
 
@@ -29,6 +36,7 @@
 
                             </tr>
                         </table>
+                        -->
                     </div>
 
                     <div class="col-md-8">
@@ -55,12 +63,32 @@
 
                             
                         </div>
-                        <div class="row item-list">
+                        <div class="row">
                             <div class="col-md-12" style="min-height: 300px;">
                                 <table class="table table-bordered">
-                                    <tr><th>{{trans('sale.item_id')}}</th><th>{{trans('sale.item_name')}}</th><th>{{trans('sale.price')}}</th><th>{{trans('sale.quantity')}}</th><th>{{trans('sale.total')}}</th><th>&nbsp;</th></tr>
-                                    <tr ng-repeat="newsaletemp in saletemp">
-                                    <td>@{{newsaletemp.item_id}}</td><td>@{{newsaletemp.item.item_name}}</td><td>@{{newsaletemp.item.selling_price | currency}}</td><td><input type="text" style="text-align:center" autocomplete="off" name="quantity" ng-change="updateSaleTemp(newsaletemp)" ng-model="newsaletemp.quantity" size="2"></td><td>@{{newsaletemp.item.selling_price * newsaletemp.quantity | currency}}</td><td><button class="btn btn-danger btn-xs" type="button" ng-click="removeSaleTemp(newsaletemp.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
+                                    <tr>
+                                        <th>{{trans('sale.item_code')}}</th>
+                                        <th>{{trans('sale.item_name')}}</th>
+                                        <th>{{trans('sale.price')}}</th>
+                                        <th>{{trans('sale.quantity')}}</th>
+                                        <th>{{trans('sale.total')}}</th>
+                                    </tr>
+                                    <tr ng-repeat="item in invoiceItems">
+                                        <td>
+                                            @{{ item.code }}
+                                        </td>
+                                        <td>
+                                            @{{ item.name }}
+                                        </td>
+                                        <td>
+                                            @{{ item.selling_price }}
+                                        </td>
+                                        <td>
+                                            @{{ item.quantity }}
+                                        </td>
+                                        <td>
+                                            @{{item.selling_price * item.quantity | currency}}
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
