@@ -5,7 +5,7 @@ return [
 	'sales_register' => 'Sales Register',
 	'search_item' => 'Search Item:',
 	'invoice' => 'Invoice',
-	'employee' => 'Employee',
+	'user' => 'User',
 	'payment_type' => 'Payment Type',
 	'customer' => 'Customer',
 	'item_id' => 'Item ID',
@@ -25,5 +25,7 @@ return [
 	'qty' => 'Qty',
 	'print' => 'Print',
 	'new_sale' => 'New Sale',
-
+	'today' => "Today's Date",
+	'hold'  => 'Hold',
+	'clear' => 'Clear'
 ];

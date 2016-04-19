@@ -18,52 +18,53 @@
                 
                 <div class="row" ng-controller="SearchItemCtrl">
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label>{{trans('sale.search_item')}} <input ng-model="searchKeyword" class="form-control"></label>
 
                         <table class="table table-hover">
-                        <tr ng-repeat="item in items  | filter: searchKeyword | limitTo:10">
+                            <tr ng-repeat="item in items  | filter: searchKeyword | limitTo:10">
 
-                        <td>@{{item.name}}</td>
-                        <td><button class="btn btn-success btn-xs" type="button" ng-click="addSaleTemp(item, newsaletemp)"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button></td>
+                                <td>@{{item.name}}</td>
+                                <td><button class="btn btn-success btn-xs" type="button" ng-click="addSaleTemp(item, newsaletemp)"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button></td>
 
-                        </tr>
+                            </tr>
                         </table>
                     </div>
 
-                    <div class="col-md-9">
+                    <div class="col-md-8">
 
                         <div class="row">
                             
                             {!! Form::open(array('url' => 'sales', 'class' => 'form-horizontal')) !!}
                                 <div class="col-md-5">
-
                                     <div class="form-group">
-                                        <label for="employee" class="col-sm-3 control-label">{{trans('sale.employee')}}</label>
+                                        <label for="employee" class="col-sm-3 control-label">{{trans('sale.today')}}</label>
                                         <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="employee" value="{{ Auth::user()->name }}" readonly/>
+                                            <input type="text" class="form-control" id="employee" value="{{  date ('Y-m-d') }}" readonly/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-7">
-
-
+                                <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="payment_type" class="col-sm-4 control-label">{{trans('sale.payment_type')}}</label>
-                                        <div class="col-sm-8">
-                                        {!! Form::select('payment_type', array('Cash' => 'Cash', 'Check' => 'Check', 'Debit Card' => 'Debit Card', 'Credit Card' => 'Credit Card'), Input::old('payment_type'), array('class' => 'form-control')) !!}
+                                        <label for="user" class="col-sm-3 control-label">{{trans('sale.user')}}</label>
+                                        <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="user" value="{{ Auth::user()->username }}" readonly/>
                                         </div>
                                     </div>
                                 </div>
+
                             
                         </div>
-                           
-                        <table class="table table-bordered">
-                            <tr><th>{{trans('sale.item_id')}}</th><th>{{trans('sale.item_name')}}</th><th>{{trans('sale.price')}}</th><th>{{trans('sale.quantity')}}</th><th>{{trans('sale.total')}}</th><th>&nbsp;</th></tr>
-                            <tr ng-repeat="newsaletemp in saletemp">
-                            <td>@{{newsaletemp.item_id}}</td><td>@{{newsaletemp.item.item_name}}</td><td>@{{newsaletemp.item.selling_price | currency}}</td><td><input type="text" style="text-align:center" autocomplete="off" name="quantity" ng-change="updateSaleTemp(newsaletemp)" ng-model="newsaletemp.quantity" size="2"></td><td>@{{newsaletemp.item.selling_price * newsaletemp.quantity | currency}}</td><td><button class="btn btn-danger btn-xs" type="button" ng-click="removeSaleTemp(newsaletemp.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
-                            </tr>
-                        </table>
+                        <div class="row item-list">
+                            <div class="col-md-12" style="min-height: 300px;">
+                                <table class="table table-bordered">
+                                    <tr><th>{{trans('sale.item_id')}}</th><th>{{trans('sale.item_name')}}</th><th>{{trans('sale.price')}}</th><th>{{trans('sale.quantity')}}</th><th>{{trans('sale.total')}}</th><th>&nbsp;</th></tr>
+                                    <tr ng-repeat="newsaletemp in saletemp">
+                                    <td>@{{newsaletemp.item_id}}</td><td>@{{newsaletemp.item.item_name}}</td><td>@{{newsaletemp.item.selling_price | currency}}</td><td><input type="text" style="text-align:center" autocomplete="off" name="quantity" ng-change="updateSaleTemp(newsaletemp)" ng-model="newsaletemp.quantity" size="2"></td><td>@{{newsaletemp.item.selling_price * newsaletemp.quantity | currency}}</td><td><button class="btn btn-danger btn-xs" type="button" ng-click="removeSaleTemp(newsaletemp.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
 
                         <div class="row">
                                 <div class="col-md-6">
@@ -72,8 +73,15 @@
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <div class="input-group-addon">$</div>
-                                                <input type="text" class="form-control" id="add_payment" ng-model="add_payment"/>
+                                                <input type="number" class="form-control" id="add_payment" ng-model="add_payment"/>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div>&nbsp;</div>
+                                    <div class="form-group">
+                                        <label for="payment_type" class="col-sm-4 control-label">{{trans('sale.payment_type')}}</label>
+                                        <div class="col-sm-8">
+                                            {!! Form::select('payment_type', array('Cash' => 'Cash', 'Check' => 'Check', 'Debit Card' => 'Debit Card', 'Credit Card' => 'Credit Card'), Input::old('payment_type'), array('class' => 'form-control')) !!}
                                         </div>
                                     </div>
                                     <div>&nbsp;</div>
@@ -83,6 +91,8 @@
                                         <input type="text" class="form-control" name="comments" id="comments" />
                                         </div>
                                     </div>
+
+
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -100,9 +110,12 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-10 col-sm-offset-1">
                                             <button type="submit" class="btn btn-success btn-block">{{trans('sale.submit')}}</button>
+                                            <button type="button" class="btn btn-warning btn-block">{{trans('sale.hold')}}</button>
+                                            <button type="button" class="btn btn-danger btn-block">{{trans('sale.clear')}}</button>
                                         </div>
+
                                     </div>
 
                                 </div>
