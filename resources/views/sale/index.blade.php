@@ -46,17 +46,18 @@
                             {!! Form::open(array('url' => 'sales', 'class' => 'form-horizontal')) !!}
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="employee" class="col-sm-3 control-label">{{trans('sale.today')}}</label>
+                                        <label for="user" class="col-sm-3 control-label">{{trans('sale.user')}}</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="employee" value="{{  date ('Y-m-d') }}" readonly/>
+                                        <input type="text" class="form-control" id="user" value="{{ Auth::user()->username }}" readonly/>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="user" class="col-sm-3 control-label">{{trans('sale.user')}}</label>
                                         <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="user" value="{{ Auth::user()->username }}" readonly/>
+                                            <input type="text" class="form-control" id="user" value="{{ Auth::user()->username }}" readonly/>
                                         </div>
                                     </div>
                                 </div>
@@ -104,6 +105,13 @@
 
                         <div class="row">
                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="service_type" class="col-sm-4 control-label">{{trans('sale.service_type')}}</label>
+                                        <div class="col-sm-8">
+                                            {!! Form::select('service_type', array('Check-In' => 'Check-In', 'Take-Away' => 'Take-Away', 'Home-Delivery' => 'Home-Delivery'), Input::old('service_type'), array('class' => 'form-control')) !!}
+                                        </div>
+                                    </div>
+                                    <div>&nbsp;</div>
                                     <div class="form-group">
                                         <label for="total" class="col-sm-4 control-label">{{trans('sale.add_payment')}}</label>
                                         <div class="col-sm-8">

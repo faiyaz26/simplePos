@@ -81,7 +81,7 @@ class ItemController extends Controller {
         $items = Item::find($id);
 
         // save update
-        $items->code = Input::get('upc_ean_isbn');
+        $items->code = Input::get('code');
         $items->name = Input::get('name');
         $items->description = Input::get('description');
         $items->cost_price = Input::get('cost_price');

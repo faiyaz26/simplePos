@@ -17,6 +17,8 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function(Blueprint $table){
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
+            $table->string('service_type', 20);
             $table->string('payment_mode', 20);
             $table->string('reference_number', 30);
             $table->decimal('paid', 9, 2)->default(0);

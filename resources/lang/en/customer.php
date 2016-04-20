@@ -20,5 +20,5 @@ return [
 	'edit'	=> 'Edit',
 	'delete'	=> 'Delete',
 	'update_customer' => 'Update Customer',
-
+	'comment' => 'Comment'
 ];

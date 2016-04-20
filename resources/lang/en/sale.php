@@ -7,6 +7,7 @@ return [
 	'invoice' => 'Invoice',
 	'user' => 'User',
 	'payment_type' => 'Payment Type',
+    'service_type' => 'Service Type',
 	'customer' => 'Customer',
 	'item_id' => 'Item ID',
 	'item_name' => 'Item Name',
