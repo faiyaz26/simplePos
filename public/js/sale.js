@@ -1,7 +1,22 @@
 (function(){
     var app = angular.module('tutapos', [ ]);
-
+    app.directive('ngReallyClick', [function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                element.bind('click', function() {
+                    var message = attrs.ngReallyMessage;
+                    if (message && confirm(message)) {
+                        scope.$apply(attrs.ngReallyClick);
+                    }
+                });
+            }
+        }
+    }]);
     app.controller("SearchItemCtrl", [ '$scope', '$http', function($scope, $http) {
+        $scope.onlyNumbers = /^\d+$/;
+
+        $scope.paid = 0;
         $scope.items = [ ];
         $http.get('api/v1/items').success(function(data) {
             $scope.items = data;
@@ -26,6 +41,18 @@
             $scope.invoiceItems.push(item);
             return;
         }
+
+
+
+        $scope.removeItem = function(item){
+            for(i=0;i< $scope.invoiceItems.length ; i++){
+                if(item.id == $scope.invoiceItems[i].id){
+                    $scope.invoiceItems.splice(i, 1);
+                    return;
+                }
+            }
+        }
+
         $scope.addSaleTemp = function(item, newsaletemp) {
             $http.post('api/saletemp', { item_id: item.id, cost_price: item.cost_price, selling_price: item.selling_price }).
             success(function(data, status, headers, config) {
@@ -51,12 +78,18 @@
                         });
                 });
         }
-        $scope.sum = function(list) {
+
+        $scope.getTotal = function(){
             var total=0;
-            angular.forEach(list , function(newsaletemp){
-                total+= parseFloat(newsaletemp.item.selling_price * newsaletemp.quantity);
+            angular.forEach($scope.invoiceItems , function(item){
+                total+= parseFloat(item.selling_price * item.quantity);
             });
             return total;
+        }
+
+        $scope.getDue = function(){
+            var val = $scope.paid - $scope.getTotal();
+            return val;
         }
 
     }]);

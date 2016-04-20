@@ -72,6 +72,7 @@
                                         <th>{{trans('sale.price')}}</th>
                                         <th>{{trans('sale.quantity')}}</th>
                                         <th>{{trans('sale.total')}}</th>
+                                        <th></th>
                                     </tr>
                                     <tr ng-repeat="item in invoiceItems">
                                         <td>
@@ -84,10 +85,17 @@
                                             @{{ item.selling_price }}
                                         </td>
                                         <td>
-                                            @{{ item.quantity }}
+                                            <input type="number" ng-model = "item.quantity" maxlength="4" size="4" min="0" ng-pattern="onlyNumbers"/>
                                         </td>
                                         <td>
                                             @{{item.selling_price * item.quantity | currency}}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-xs" aria-label="Left Align" ng-really-message="Are you sure to delete the item ?"  ng-really-click="removeItem(item)">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            </button>
+
+
                                         </td>
                                     </tr>
                                 </table>
@@ -101,7 +109,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <div class="input-group-addon">$</div>
-                                                <input type="number" class="form-control" id="add_payment" ng-model="add_payment"/>
+                                                <input type="number" class="form-control" id="add_payment" ng-model="paid"/>
                                             </div>
                                         </div>
                                     </div>
@@ -126,14 +134,16 @@
                                     <div class="form-group">
                                         <label for="supplier_id" class="col-sm-4 control-label">{{trans('sale.grand_total')}}</label>
                                         <div class="col-sm-8">
-                                            <p class="form-control-static"><b>@{{sum(saletemp) | currency}}</b></p>
+                                            <p class="form-control-static">
+                                                <span>BDT </span><b>@{{getTotal()}}</b>
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                             <label for="amount_due" class="col-sm-4 control-label">{{trans('sale.amount_due')}}</label>
                                             <div class="col-sm-8">
-                                            <p class="form-control-static">@{{add_payment - sum(saletemp) | currency}}</p>
+                                            <p class="form-control-static"><span>BDT </span>@{{ getDue() }}</p>
                                             </div>
                                     </div>
 
