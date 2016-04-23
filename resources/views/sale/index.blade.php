@@ -44,14 +44,6 @@
                         <div class="row">
                             
                             {!! Form::open(array('url' => 'sales', 'class' => 'form-horizontal')) !!}
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="user" class="col-sm-3 control-label">{{trans('sale.user')}}</label>
-                                        <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="user" value="{{ Auth::user()->username }}" readonly/>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="col-md-5">
                                     <div class="form-group">

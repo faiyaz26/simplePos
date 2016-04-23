@@ -14,6 +14,8 @@ return [
 	'receivings_report' 	=> 'Receivings Report',
 	'sales_report' 			=> 'Sales Report',
 	'logout'				=> 'Logout',
-	'application_settings' 	=> 'Application Settings'
+	'application_settings' 	=> 'Application Settings',
+	'rules'					=> 'Charges',
+	'discounts'  			=> 'Discounts'
 
 ];

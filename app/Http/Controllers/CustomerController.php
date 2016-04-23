@@ -96,8 +96,27 @@ class CustomerController extends Controller {
 	            $customers->address = Input::get('address');
 	            $customers->city = Input::get('city');
 	            $customers->zip = Input::get('zip');
-				$customers->comment = Input::get('comment');
+		$customers->comment = Input::get('comment');
 	            $customers->save();
+	            // process avatar
+	            $image = $request->file('avatar');
+				if(!empty($image)) {
+					$avatarName = 'cus' . $id . '.' .
+					$request->file('avatar')->getClientOriginalExtension();
+
+					$request->file('avatar')->move(
+					base_path() . '/public/images/customers/', $avatarName
+					);
+					$img = Image::make(base_path() . '/public/images/customers/' . $avatarName);
+					$img->resize(100, null, function ($constraint) {
+    					$constraint->aspectRatio();
+					});
+					$img->save();
+					$customerAvatar = Customer::find($id);
+					$customerAvatar->avatar = $avatarName;
+		            $customerAvatar->save();
+	        	}
+	            // redirect
 	            Session::flash('message', 'You have successfully updated customer');
 	            return Redirect::to('customers');
 	}

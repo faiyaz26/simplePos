@@ -41,6 +41,8 @@
 					@if (Auth::check())
 						<li><a href="{{ url('/customers') }}">{{trans('menu.customers')}}</a></li>
 						<li><a href="{{ url('/items') }}">{{trans('menu.items')}}</a></li>
+                        <li><a href="{{ url('/rules') }}">{{trans('menu.rules')}}</a></li>
+                        <li><a href="{{ url('/discounts') }}">{{trans('menu.discounts')}}</a></li>
 						<li><a href="{{ url('/sales') }}">{{trans('menu.sales')}}</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{trans('menu.reports')}} <span class="caret"></span></a>
