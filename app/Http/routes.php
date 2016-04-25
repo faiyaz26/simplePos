@@ -36,5 +36,7 @@ Route::group(['middleware' => 'language'], function()
     Route::resource('discounts', 'DiscountController');
     Route::group(['prefix' => 'api/v1'], function () {
         Route::resource('items', 'ItemApiController');
+        Route::resource('charges', 'ChargeRuleApiController');
+        Route::resource('discounts', 'DiscountApiController');
     });
 });

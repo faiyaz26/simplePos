@@ -14,7 +14,7 @@ return [
 	'item_code' => "Item Code",
 	'price' => 'Price',
 	'quantity' => 'Quantity',
-	'total' => 'Total',
+	'total' => 'Grand total',
 	'add_payment' => 'Add Payment',
 	'comments' => 'Comments',
 	'grand_total' => 'TOTAL:',
@@ -29,5 +29,6 @@ return [
 	'new_sale' => 'New Sale',
 	'today' => "Today's Date",
 	'hold'  => 'Hold',
-	'clear' => 'Clear'
+	'clear' => 'Clear',
+    'sum'  => 'Price Total'
 ];

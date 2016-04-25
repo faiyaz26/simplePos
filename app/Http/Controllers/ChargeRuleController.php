@@ -56,7 +56,7 @@ class ChargeRuleController extends Controller
         $rule->name = Input::get('name');
         $rule->type = Input::get('type');
         $rule->amount = Input::get('amount');
-        $rule->active = Input::get('active');
+        $rule->active = Input::get('active') || 0;
         $rule->description = Input::get('description');
         $rule->save();
         Session::flash('message', 'You have successfully added new charge rule');
@@ -103,7 +103,7 @@ class ChargeRuleController extends Controller
         $rule->name = Input::get('name');
         $rule->type = Input::get('type');
         $rule->amount = Input::get('amount');
-        $rule->active = Input::get('active');
+        $rule->active = Input::get('active') || 0;
         $rule->description = Input::get('description');
         $rule->save();
         // redirect

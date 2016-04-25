@@ -132,6 +132,24 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label for="supplier_id" class="col-sm-4 control-label">{{trans('sale.sum')}}</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-static">
+                                                <span>BDT </span><b>@{{getTotalWithRealPrice()}}</b>
+                                            </p>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group" ng-repeat="charge in charges">
+                                        <label for="@{{charge.name}}" class="col-sm-4 control-label">@{{charge.name}} @{{charge.amount}} @{{charge.type ==1 ? '%' : '+'}}</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-static"><span>BDT </span>@{{ charge.value | number: 2}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="supplier_id" class="col-sm-4 control-label">{{trans('sale.grand_total')}}</label>
                                         <div class="col-sm-8">
                                             <p class="form-control-static">
@@ -141,11 +159,13 @@
                                     </div>
 
                                     <div class="form-group">
-                                            <label for="amount_due" class="col-sm-4 control-label">{{trans('sale.amount_due')}}</label>
-                                            <div class="col-sm-8">
+                                        <label for="amount_due" class="col-sm-4 control-label">{{trans('sale.amount_due')}}</label>
+                                        <div class="col-sm-8">
                                             <p class="form-control-static"><span>BDT </span>@{{ getDue() }}</p>
-                                            </div>
+                                        </div>
                                     </div>
+
+
 
                                     <div class="form-group">
                                         <div class="col-sm-10 col-sm-offset-1">

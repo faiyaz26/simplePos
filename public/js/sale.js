@@ -25,8 +25,13 @@
         $scope.newsaletemp = { };
 
         $scope.invoiceItems = [];
-        $http.get('api/saletemp').success(function(data, status, headers, config) {
-            $scope.saletemp = data;
+
+
+        $scope.charges = [];
+
+        $http.get('api/v1/charges').success(function(data, status, headers, config) {
+            $scope.charges = data;
+            console.log($scope.charges);
         });
 
         $scope.addToInvoice = function(item){
@@ -80,6 +85,20 @@
         }
 
         $scope.getTotal = function(){
+            var sum = $scope.getTotalWithRealPrice();
+            angular.forEach($scope.charges, function(value, key) {
+                $scope.charges[key].value = $scope.getTotalWithRealPrice();
+                if($scope.charges[key].type == 1){ // %
+                    $scope.charges[key].value = ($scope.charges[key].value * parseFloat($scope.charges[key].amount))/100.0;
+                }else{ // +
+                    $scope.charges[key].value = (parseFloat($scope.charges[key].amount));
+                }
+
+                sum += $scope.charges[key].value;
+            });
+            return sum;
+        }
+        $scope.getTotalWithRealPrice = function(){
             var total=0;
             angular.forEach($scope.invoiceItems , function(item){
                 total+= parseFloat(item.selling_price * item.quantity);
