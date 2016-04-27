@@ -56,8 +56,8 @@ class DiscountController extends Controller
         $discount->name = Input::get('name');
         $discount->type = Input::get('type');
         $discount->amount = Input::get('amount');
-        $discount->active = Input::get('active');
-        $discount->automatic = Input::get('automatic');
+        $discount->active = Input::get('active') || 0;
+        $discount->automatic = Input::get('automatic') || 0;
         $discount->description = Input::get('description');
         $discount->save();
         Session::flash('message', 'You have successfully added new Discount rule');
@@ -104,8 +104,8 @@ class DiscountController extends Controller
         $discount->name = Input::get('name');
         $discount->type = Input::get('type');
         $discount->amount = Input::get('amount');
-        $discount->active = Input::get('active');
-        $discount->automatic = Input::get('automatic');
+        $discount->active = Input::get('active') || 0;
+        $discount->automatic = Input::get('automatic') || 0;
         $discount->description = Input::get('description');
         $discount->save();
         Session::flash('message', 'You have successfully updated Discount rule');

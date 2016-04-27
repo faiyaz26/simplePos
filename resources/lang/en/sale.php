@@ -17,7 +17,7 @@ return [
 	'total' => 'Grand total',
 	'add_payment' => 'Add Payment',
 	'comments' => 'Comments',
-	'grand_total' => 'TOTAL:',
+	'grand_total' => 'Grand Total:',
 	'amount_due' => 'Amount Due',
 	'submit' => 'Complete Sale',
 	//struk
@@ -30,5 +30,5 @@ return [
 	'today' => "Today's Date",
 	'hold'  => 'Hold',
 	'clear' => 'Clear',
-    'sum'  => 'Price Total'
+    'sum'  => 'Price Total',
 ];

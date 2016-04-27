@@ -128,12 +128,30 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="discount" class="col-sm-4 control-label">Discounts</label>
+                                        <div class="col-sm-8" class="form-control" style="margin-top: 10px;">
+                                            <div class="span1" ng-repeat="discount in discountOptions">
+                                                <a href="#" class="btn btn-primary btn-lg" ng-really-message="Are you sure to add the discount ?"  ng-really-click="addDiscount(discount)">
+                                                    <i class="icon-pencil icon-white"></i>
+                                                    <span>
+                                                        <strong>@{{discount.name}}</strong>
+                                                        <p>
+                                                            @{{discount.amount | number : 2}}
+                                                            @{{ (discount.type == 1)?'%':'-' }}
+                                                        </p>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="supplier_id" class="col-sm-4 control-label">{{trans('sale.sum')}}</label>
-                                        <div class="col-sm-8">
+                                        <label for="supplier_id" class="col-sm-6 control-label">{{trans('sale.sum')}}</label>
+                                        <div class="col-sm-6">
                                             <p class="form-control-static">
                                                 <span>BDT </span><b>@{{getTotalWithRealPrice()}}</b>
                                             </p>
@@ -142,25 +160,45 @@
 
 
 
+
+
                                     <div class="form-group" ng-repeat="charge in charges">
-                                        <label for="@{{charge.name}}" class="col-sm-4 control-label">@{{charge.name}} @{{charge.amount}} @{{charge.type ==1 ? '%' : '+'}}</label>
-                                        <div class="col-sm-8">
-                                            <p class="form-control-static"><span>BDT </span>@{{ charge.value | number: 2}}</p>
+                                        <label for="@{{charge.name}}" class="col-sm-6 control-label">@{{charge.name}} @{{charge.amount}} @{{charge.type ==1 ? '%' : '+'}}</label>
+                                        <div class="col-sm-6">
+                                            <p class="form-control-static"><span>+ BDT </span>@{{ charge.value | number: 2}}</p>
+                                        </div>
+                                    </div>
+
+                                   
+
+                                    <div class="form-group" ng-repeat="discount in discountTrack">
+                                        <label for="@{{discount.name}}" class="col-sm-6 control-label">@{{discount.name}} @{{discount.amount}} @{{discount.type ==1 ? '%' : '-'}}</label>
+                                        <div class="col-sm-6">
+                                            <p class="form-control-static">
+                                                <span>- BDT </span>@{{ getDiscountedPrice(discount.amount, discount.type) | number: 2}}
+                                                <span>
+                                                    <button type="button" class="btn btn-danger btn-xs" aria-label="Right Align" ng-click="removeDiscount(discount)">
+                                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                    </button>
+                                                </span>
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="supplier_id" class="col-sm-4 control-label">{{trans('sale.grand_total')}}</label>
-                                        <div class="col-sm-8">
+                                        <label for="supplier_id" class="col-sm-6 control-label">{{trans('sale.grand_total')}}</label>
+                                        <div class="col-sm-6">
                                             <p class="form-control-static">
                                                 <span>BDT </span><b>@{{getTotal()}}</b>
                                             </p>
                                         </div>
                                     </div>
 
+
+
                                     <div class="form-group">
-                                        <label for="amount_due" class="col-sm-4 control-label">{{trans('sale.amount_due')}}</label>
-                                        <div class="col-sm-8">
+                                        <label for="amount_due" class="col-sm-6 control-label">{{trans('sale.amount_due')}}</label>
+                                        <div class="col-sm-6">
                                             <p class="form-control-static"><span>BDT </span>@{{ getDue() }}</p>
                                         </div>
                                     </div>

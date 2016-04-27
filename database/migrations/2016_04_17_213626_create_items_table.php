@@ -19,6 +19,7 @@ class CreateItemsTable extends Migration
             $table->increments('id');
             $table->string('code',90);
             $table->string('name',90);
+            $table->string('category', 90);
             $table->text('description');
            // $table->string('avatar', 255)->default('no-foto.png');
             $table->decimal('cost_price',9, 2);

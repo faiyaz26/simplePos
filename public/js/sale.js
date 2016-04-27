@@ -29,11 +29,41 @@
 
         $scope.charges = [];
 
+        $scope.discountOptions = [];
+        $scope.discountTrack = [];
+
+
+
         $http.get('api/v1/charges').success(function(data, status, headers, config) {
             $scope.charges = data;
             console.log($scope.charges);
         });
 
+        $http.get('api/v1/discounts').success(function(data, status, headers, config) {
+            $scope.discountOptions = data;
+        });
+
+        $scope.addDiscount = function(discount){
+            $scope.discountTrack.push(angular.copy(discount));
+            return;
+        }
+
+
+        $scope.getDiscountedPrice = function(amount, type){
+            if(type == 2){
+                return amount;
+            }
+            return ($scope.getTotal() * parseFloat(amount))/100.0;
+        }
+        $scope.removeDiscount = function(item){
+            for(i=0;i< $scope.discountTrack.length ; i++){
+                if(item.id == $scope.discountTrack[i].id){
+                    $scope.discountTrack.splice(i, 1);
+                    return;
+                }
+            }
+            return;
+        }
         $scope.addToInvoice = function(item){
             for(i = 0; i < $scope.invoiceItems.length ; i++){
                 if($scope.invoiceItems[i].id == item.id){
