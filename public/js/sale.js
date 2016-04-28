@@ -1,5 +1,5 @@
 (function(){
-    var app = angular.module('tutapos', [ ]);
+    var app = angular.module('tutapos', ['selectize']);
     app.directive('ngReallyClick', [function() {
         return {
             restrict: 'A',
@@ -32,11 +32,16 @@
         $scope.discountOptions = [];
         $scope.discountTrack = [];
 
+        $scope.customerList = [];
+        $scope.customer = undefined;
 
+        $http.get('api/v1/customers').success(function(data, status, headers, config) {
+          //  console.log('sdsd', data);
+            $scope.customerList = data;
+        });
 
         $http.get('api/v1/charges').success(function(data, status, headers, config) {
             $scope.charges = data;
-            console.log($scope.charges);
         });
 
         $http.get('api/v1/discounts').success(function(data, status, headers, config) {
@@ -47,6 +52,37 @@
             $scope.discountTrack.push(angular.copy(discount));
             return;
         }
+
+
+        $scope.customerListConfig = {
+            create: false,
+            searchField: ['name', 'phone_number'],
+            valueField: 'id',
+            labelField: 'name',
+            delimiter: '|',
+            placeholder: 'Pick someone',
+            onInitialize: function(selectize){
+                // receives the selectize object as an argument
+            },
+
+            render: {
+                item: function (item, escape) {
+                    return '<div>' +
+                        (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+                        (item.phone_number ? '<span class="email">' + escape(item.phone_number) + '</span>' : '') +
+                        '</div>';
+                },
+                option: function(item, escape) {
+                    var label = item.name || item.phone_number;
+                    var caption = item.phone_number ? item.phone_number : null;
+                    return '<div>' +
+                        '<strong>' + escape(label) + '</strong>' +
+                        (caption ? '<p class="caption">' + escape(caption) + '</p>' : '') +
+                        '</div>';
+                }
+            }
+            // maxItems: 1
+        };
 
 
         $scope.getDiscountedPrice = function(amount, type){

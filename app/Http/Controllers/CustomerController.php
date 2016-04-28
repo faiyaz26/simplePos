@@ -4,7 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Customer;
 use App\Http\Requests\CustomerRequest;
-use \Auth, \Redirect, \Validator, \Input, \Session;
+use \Auth, \Redirect, \Validator, \Input, \Session, \Response;
 use Image;
 use Illuminate\Http\Request;
 
@@ -143,6 +143,11 @@ class CustomerController extends Controller {
     		Session::flash('alert-class', 'alert-danger');
 	        return Redirect::to('customers');	
     	}
+	}
+
+
+	public function getCustomerList(){
+		return Response::json(Customer::all());
 	}
 
 }

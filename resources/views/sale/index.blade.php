@@ -2,6 +2,9 @@
 @section('content')
 {!! Html::script('js/angular.min.js', array('type' => 'text/javascript')) !!}
 {!! Html::script('js/sale.js', array('type' => 'text/javascript')) !!}
+<link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css ">
+<script type="text/javascript" src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-selectize2/dist/angular-selectize.js"></script>
 
 <div class="container-fluid">
    <div class="row">
@@ -52,6 +55,15 @@
                                             <input type="text" class="form-control" id="user" value="{{ Auth::user()->username }}" readonly/>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="user" class="col-sm-3 control-label">{{trans('sale.customer')}}</label>
+                                        <div class="col-sm-9">
+                                            <selectize config='customerListConfig' options='customerList' ng-model="customer"></selectize>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                             
@@ -169,7 +181,7 @@
                                         </div>
                                     </div>
 
-                                   
+
 
                                     <div class="form-group" ng-repeat="discount in discountTrack">
                                         <label for="@{{discount.name}}" class="col-sm-6 control-label">@{{discount.name}} @{{discount.amount}} @{{discount.type ==1 ? '%' : '-'}}</label>
