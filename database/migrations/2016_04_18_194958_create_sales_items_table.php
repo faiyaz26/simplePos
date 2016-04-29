@@ -24,9 +24,6 @@ class CreateSalesItemsTable extends Migration
             $table->decimal('selling_price',9, 2);
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('sale_id')->references('id')->on('sales');
-            $table->foreign('item_id')->references('id')->on('items');
         });
     }
 

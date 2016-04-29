@@ -17,18 +17,15 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function(Blueprint $table){
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('customer_id')->unsigned();
+            $table->integer('customer_id')->unsigned()->nullable();
             $table->string('service_type', 20);
             $table->string('payment_mode', 20);
-            $table->string('reference_number', 30);
+            $table->string('reference_number', 30)->nullable();
             $table->decimal('paid', 9, 2)->default(0);
             $table->text('comment')->nullable();
             $table->string('status', 20);
             $table->softDeletes();
             $table->timestamps();
-
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -63,10 +63,11 @@
                                             <selectize config='customerListConfig' options='customerList' ng-model="customer"></selectize>
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="col-md-2">
+                                    <a target="_blank" href="{{url('customers/create') }}"> Create New Customer </a>
                                 </div>
 
-                            
                         </div>
                         <div class="row">
                             <div class="col-md-12" style="min-height: 300px;">
