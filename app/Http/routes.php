@@ -39,5 +39,6 @@ Route::group(['middleware' => 'language'], function()
         Route::resource('charges', 'ChargeRuleApiController');
         Route::resource('discounts', 'DiscountApiController');
         Route::get('customers', 'CustomerController@getCustomerList');
+        Route::resource('sales', 'SaleApiController');
     });
 });

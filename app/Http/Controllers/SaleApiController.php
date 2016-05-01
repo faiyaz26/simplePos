@@ -10,12 +10,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use \Auth, \Redirect, \Validator, \Input, \Session;
+use \Auth, \Redirect, \Validator, \Input, \Session, \Response;
 use Illuminate\Http\Request;
 
 use App\Sale;
 use App\SaleItem;
-use Illuminate\Http\Response;
+use App\SaleCharge, App\SaleDiscount;
+use DB;
 
 
 class SaleApiController extends Controller
@@ -40,13 +41,13 @@ class SaleApiController extends Controller
             /* Storing Sale Information */
             $sale = new Sale;
             $sale->user_id      = Auth::user()->id;
-            $sale->customer_id  = $data['sale']['customerId'] || NULL;
-            $sale->service_type = $data['sale']['serviceType'];
-            $sale->payment_mode = $data['sale']['paymentMode'];
-            $sale->reference_number = $data['sale']['reference_number'];
-            $sale->paid         = $data['sale']['paid'];
-            $sale->comment      = $data['sale']['comment'];
-            $sale->status       = $data['sale']['status'];
+            $sale->customer_id  = $data['customerId'] || NULL;
+            $sale->service_type = $data['serviceType'];
+            $sale->payment_mode = $data['paymentMode'];
+            $sale->reference_number = $data['reference_number'];
+            $sale->paid         = $data['paid'];
+            $sale->comment      = $data['comment'];
+            $sale->status       = $data['status'];
 
             $sale->save();
 
@@ -85,8 +86,51 @@ class SaleApiController extends Controller
             }
         }
 
+
+        /* Storing Charges */
+        foreach($data['saleCharges'] as $charge){
+            try {
+                $saleCharge = new SaleCharge;
+                $saleCharge->sale_id = $sale->id;
+                $saleCharge->charge_id = $charge['id'];
+                $saleCharge->type      = $charge['type'];
+                $saleCharge->amount    = $charge['amount'];
+                $saleCharge->save();
+            } catch(ValidationException $e){
+                // Rollback and then redirect
+                // back to form with errors
+                DB::rollback();
+                return Response::json(array('success' => false));
+            } catch(\Exception $e)
+            {
+                DB::rollback();
+                throw $e;
+            }
+        }
+
+
+        /* Storing Discounts */
+        foreach($data['saleDiscounts'] as $discount){
+            try {
+                $saleDiscount = new SaleDiscount;
+                $saleDiscount->sale_id = $sale->id;
+                $saleDiscount->discount_id = $discount['id'];
+                $saleDiscount->type      = $discount['type'];
+                $saleDiscount->amount    = $discount['amount'];
+                $saleDiscount->save();
+            } catch(ValidationException $e){
+                // Rollback and then redirect
+                // back to form with errors
+                DB::rollback();
+                return Response::json(array('success' => false));
+            } catch(\Exception $e)
+            {
+                DB::rollback();
+                throw $e;
+            }
+        }
         DB::commit();
 
-        return Response::json(array('success' => true, $data => $sale->toArray()));
+        return Response::json(array('success' => true, "data" => $sale->toArray()));
     }
 }
