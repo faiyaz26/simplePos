@@ -26,14 +26,18 @@ Route::group(['middleware' => 'language'], function()
 
     Route::resource('users', 'UserController');
     Route::resource('items', 'ItemController');
+    Route::resource('pos', 'PosController');
+    Route::resource('customers', 'CustomerController');
+    Route::resource('rules', 'ChargeRuleController');
+    Route::resource('discounts', 'DiscountController');
+
+    Route::resource('receipt', 'ReceiptController');
+
+    Route::resource('settings', 'SettingsController');
 
     Route::resource('sales', 'SaleController');
 
-    Route::resource('customers', 'CustomerController');
 
-    Route::resource('rules', 'ChargeRuleController');
-
-    Route::resource('discounts', 'DiscountController');
     Route::group(['prefix' => 'api/v1'], function () {
         Route::resource('items', 'ItemApiController');
         Route::resource('charges', 'ChargeRuleApiController');

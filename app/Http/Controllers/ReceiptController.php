@@ -1,42 +1,42 @@
 <?php
 /**
  * Created by IntelliJ IDEA.
- * User: Ahmad Faiyaz
- * Date: 4/19/2016
- * Time: 1:54 AM
+ * User: ASUS
+ * Date: 5/13/2016
+ * Time: 12:17 AM
  */
-namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-class Sale extends Model {
-    use SoftDeletes;
-    protected $table = 'sales';
+namespace App\Http\Controllers;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
-    public function items(){
-        return $this->hasMany('App\SaleItem');
+use \Auth, \Redirect, \Validator, \Input, \Session, \Hash, \DB;
+use Illuminate\Http\Request;
+
+
+use App\User;
+use App\Sale;
+use App\Item;
+use App\Discount;
+use App\ChargeRule;
+
+class ReceiptController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth');
     }
 
-    public function discounts(){
-        return $this->hasMany('App\SaleDiscount');
-    }
 
-    public function charges(){
-        return $this->hasMany('App\SaleCharge');
-    }
+    public function show($id){
+        $sale = Sale::findOrFail($id);
 
-    public function getTotalPrice(){
-        return $this->items->sum(function($item) {
-            return $item->totalPrice();
-        });
-    }
-
-    public function saleAmount(){
         $data = [];
-        $data = array_merge($data, $this->toArray());
-        $data ['items'] = $this->items->toArray();
-        $data['discounts'] = $this->discounts->toArray();
-        $data['charges']   = $this->charges->toArray();
+
+        $data = array_merge($data, $sale->toArray());
+        $data ['items'] = $sale->items->toArray();
+        $data['discounts'] = $sale->discounts->toArray();
+        $data['charges']   = $sale->charges->toArray();
 
         $data['grossTotal'] = 0.0;
 
@@ -79,6 +79,25 @@ class Sale extends Model {
 
 
         $data['totalPayment'] = $data['grossTotal'] - $discountSum + $chargeSum;
-        return $data['totalPayment'];
+        $data['returnAmount'] = $data['paid'] - $data['totalPayment'];
+
+        if($data['returnAmount'] >= 0.0){
+            $data['paymentDone'] = "PAID";
+        }else{
+            $data['paymentDone'] = "NOT PAID";
+        }
+
+
+        $ret = DB::table('settings')->get();
+        $data['company'] = $ret[2]->value;
+        $data['receiptHeader'] = $ret[3]->value;
+
+        return view('receipt.show')
+            ->with('data', $data);
     }
+
+
+
+
+
 }

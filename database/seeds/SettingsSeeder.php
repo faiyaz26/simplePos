@@ -23,6 +23,10 @@ class SettingsSeeder extends Seeder
             array(
                 'key' => 'company',
                 'value' => 'Axiara Co.'
+            ),
+            array(
+                'key' => 'receiptHeader',
+                'value' => ''
             )
         );
         DB::table('settings')->insert($data);

@@ -18,7 +18,7 @@ class SaleItem extends Model {
         return $this->belongsTo('App\Sale');
     }
 
-    public function item(){
+    public function original(){
         return $this->belongsTo('App\Item');
     }
 

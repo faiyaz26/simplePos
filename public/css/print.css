@@ -1,0 +1,42 @@
+@media print {
+    #printable{
+        width: 80mm;
+        margin: 0;
+    }
+
+    /* Hide everything in the body when printing... */
+    body.printing * { display: none; }
+    /* ...except our special div. */
+    body.printing #print-me { display: block; }
+
+
+}
+
+@media screen {
+    /* Hide the special layer from the screen. */
+    #print-me { display: none; }
+}
+.table-borderless{
+    margin-bottom: 0px;
+}
+
+.table-borderless tr{
+    margin-bottom: 0px;
+}
+.table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+    border: none;
+
+}
+
+#printable hr{
+    margin: 1px;
+}
+
+.payment {
+    margin : 10px 1%;
+}
+
+.payment * {
+    margin: 0px;
+}
+

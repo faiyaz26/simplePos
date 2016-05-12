@@ -10,23 +10,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use \Auth, \Redirect, \Validator, \Input, \Session, \Response;
+use \Auth, \Redirect, \Validator, \Input, \Session;
 use Illuminate\Http\Request;
 
-use App\Sale;
-use App\SaleItem;
-use App\SaleCharge, App\SaleDiscount;
-use DB;
 
-class SaleController extends Controller{
+class PosController extends Controller
+{
     public function __construct()
     {
         $this->middleware('auth');
     }
 
     public function index(){
-        $data = Sale::find(15)->saleAmount();
-        dd($data);
-        return view('sale.index');
+        return view('pos.index');
     }
 }

@@ -59,8 +59,14 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="user" class="col-sm-3 control-label">{{trans('sale.customer')}}</label>
-                                        <div class="col-sm-9">
-                                            <selectize config='customerListConfig' options='customerList' ng-model="customer"></selectize>
+                                        <div class="col-md-7">
+                                            <selectize config='customerListConfig' options='customerList' ng-model="sale.customerId"></selectize>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a href="#" class="btn btn-primary" ng-click="refreshCustomerList()">
+                                                <span ng-show="searchButtonText == 'Fetching'"><i class="glyphicon glyphicon-refresh spinning"></i></span>
+                                                @{{ searchButtonText }}
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +86,7 @@
                                         <th>{{trans('sale.total')}}</th>
                                         <th></th>
                                     </tr>
-                                    <tr ng-repeat="item in invoiceItems">
+                                    <tr ng-repeat="item in sale.saleItems">
                                         <td>
                                             @{{ item.code }}
                                         </td>
@@ -113,7 +119,11 @@
                                     <div class="form-group">
                                         <label for="service_type" class="col-sm-4 control-label">{{trans('sale.service_type')}}</label>
                                         <div class="col-sm-8">
-                                            {!! Form::select('service_type', array('Check-In' => 'Check-In', 'Take-Away' => 'Take-Away', 'Home-Delivery' => 'Home-Delivery'), Input::old('service_type'), array('class' => 'form-control')) !!}
+                                            <select required ng-model="sale.serviceType" class="form-control">
+                                                <option value="Check-In">Check-In</option>
+                                                <option value="Take-Away">Take-Away</option>
+                                                <option value="Home-Delivery">Home-Delivery</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div>&nbsp;</div>
@@ -122,7 +132,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <div class="input-group-addon">$</div>
-                                                <input type="number" class="form-control" id="add_payment" ng-model="paid"/>
+                                                <input type="number" class="form-control" id="add_payment" ng-model="sale.paid"/>
                                             </div>
                                         </div>
                                     </div>
@@ -130,14 +140,26 @@
                                     <div class="form-group">
                                         <label for="payment_type" class="col-sm-4 control-label">{{trans('sale.payment_type')}}</label>
                                         <div class="col-sm-8">
-                                            {!! Form::select('payment_type', array('Cash' => 'Cash', 'Check' => 'Check', 'Debit Card' => 'Debit Card', 'Credit Card' => 'Credit Card'), Input::old('payment_type'), array('class' => 'form-control')) !!}
+                                            <select class="form-control" ng-model="sale.paymentMode">
+                                                <option value="Cash" selected>Cash</option>
+                                                <option value="Check">Check</option>
+                                                <option value="Debit_Card">Debit Card</option>
+                                                <option value="Credit_Card">Credit Card</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>&nbsp;</div>
+                                    <div class="form-group">
+                                        <label for="employee" class="col-sm-4 control-label">{{trans('sale.reference_no')}}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="comments" id="reference" ng-model="sale.referenceNumber"/>
                                         </div>
                                     </div>
                                     <div>&nbsp;</div>
                                     <div class="form-group">
                                         <label for="employee" class="col-sm-4 control-label">{{trans('sale.comments')}}</label>
                                         <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="comments" id="comments" />
+                                        <input type="text" class="form-control" name="comments" id="comments" ng-model="sale.comment"/>
                                         </div>
                                     </div>
 
@@ -166,25 +188,13 @@
                                         <label for="supplier_id" class="col-sm-6 control-label">{{trans('sale.sum')}}</label>
                                         <div class="col-sm-6">
                                             <p class="form-control-static">
-                                                <span>BDT </span><b>@{{getTotalWithRealPrice()}}</b>
+                                                <span>BDT </span><b>@{{getGrossTotal()}}</b>
                                             </p>
                                         </div>
                                     </div>
 
 
-
-
-
-                                    <div class="form-group" ng-repeat="charge in charges">
-                                        <label for="@{{charge.name}}" class="col-sm-6 control-label">@{{charge.name}} @{{charge.amount}} @{{charge.type ==1 ? '%' : '+'}}</label>
-                                        <div class="col-sm-6">
-                                            <p class="form-control-static"><span>+ BDT </span>@{{ charge.value | number: 2}}</p>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="form-group" ng-repeat="discount in discountTrack">
+                                    <div class="form-group" ng-repeat="discount in sale.discounts">
                                         <label for="@{{discount.name}}" class="col-sm-6 control-label">@{{discount.name}} @{{discount.amount}} @{{discount.type ==1 ? '%' : '-'}}</label>
                                         <div class="col-sm-6">
                                             <p class="form-control-static">
@@ -198,11 +208,24 @@
                                         </div>
                                     </div>
 
+
+
+                                    <div class="form-group" ng-repeat="charge in charges">
+                                        <label for="@{{charge.name}}" class="col-sm-6 control-label">@{{charge.name}} @{{charge.amount}} @{{charge.type ==1 ? '%' : '+'}}</label>
+                                        <div class="col-sm-6">
+                                            <p class="form-control-static"><span>+ BDT </span>@{{ charge.value | number: 2}}</p>
+                                        </div>
+                                    </div>
+
+
+
+
+
                                     <div class="form-group">
                                         <label for="supplier_id" class="col-sm-6 control-label">{{trans('sale.grand_total')}}</label>
                                         <div class="col-sm-6">
                                             <p class="form-control-static">
-                                                <span>BDT </span><b>@{{getTotal()}}</b>
+                                                <span>BDT </span><b>@{{getTotalPayment() | number: 2 }}</b>
                                             </p>
                                         </div>
                                     </div>
@@ -212,7 +235,7 @@
                                     <div class="form-group">
                                         <label for="amount_due" class="col-sm-6 control-label">{{trans('sale.amount_due')}}</label>
                                         <div class="col-sm-6">
-                                            <p class="form-control-static"><span>BDT </span>@{{ getDue() }}</p>
+                                            <p class="form-control-static"><span>BDT </span>@{{ getDue() | number: 2 }}</p>
                                         </div>
                                     </div>
 
@@ -220,9 +243,9 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-10 col-sm-offset-1">
-                                            <button type="submit" class="btn btn-success btn-block">{{trans('sale.submit')}}</button>
-                                            <button type="button" class="btn btn-warning btn-block">{{trans('sale.hold')}}</button>
-                                            <button type="button" class="btn btn-danger btn-block">{{trans('sale.clear')}}</button>
+                                            <button type="button" class="btn btn-success btn-block" ng-click="storeSaleData()">{{trans('sale.submit')}}</button>
+                                            <button type="button" class="btn btn-warning btn-block" >{{trans('sale.hold')}}</button>
+                                            <button type="button" class="btn btn-danger btn-block" ng-really-message="Are you sure to clear data ?"  ng-really-click="clearSaleData()">{{trans('sale.clear')}}</button>
                                         </div>
 
                                     </div>

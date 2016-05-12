@@ -22,8 +22,7 @@ class CustomerRequest extends Request {
 	public function rules()
 	{
 		return [
-			'name' => 'required',
-			'email' => 'email'
+			'name' => 'required'
 		];
 	}
 

@@ -17,7 +17,7 @@ class CreatePosSettingsTable extends Migration
         {
             $table->increments('id');
             $table->string('key');
-            $table->string('value');
+            $table->text('value');
             $table->timestamps();
         });
     }

@@ -7,13 +7,18 @@
 	<title>Simple POS</title>
 
 	<link href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
-	<script   src="//code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+	<script src="//code.jquery.com/jquery-2.2.0.min.js" crossorigin="anonymous"></script>
+	<script src="{{asset('/js/jquery.print.js')}}" crossorigin="anonymous"></script>
+
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/footer.css') }}" rel="stylesheet">
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 
 	<link rel="shortcut icon" href="{{asset('favicon.ico')}}" type="image/x-icon" />
+
+
+	{!! Html::style('css/print.css') !!}
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,7 +38,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Simple-POS</a>
+				<a class="navbar-brand" href="{{ url('/') }}">Simple-POS</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -44,7 +49,8 @@
 						<li><a href="{{ url('/items') }}">{{trans('menu.items')}}</a></li>
                         <li><a href="{{ url('/rules') }}">{{trans('menu.rules')}}</a></li>
                         <li><a href="{{ url('/discounts') }}">{{trans('menu.discounts')}}</a></li>
-						<li><a href="{{ url('/sales') }}">{{trans('menu.sales')}}</a></li>
+						<li><a href="{{ url('/pos') }}">{{trans('menu.pos')}}</a></li>
+						<!--
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{trans('menu.reports')}} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
@@ -52,6 +58,7 @@
 								<li><a href="{{ url('/reports/sales') }}">{{trans('menu.sales_report')}}</a></li>
 							</ul>
 						</li>
+						-->
 						<li><a href="{{ url('/users') }}">{{trans('menu.users')}}</a></li>
 					@endif
 				</ul>
@@ -83,7 +90,6 @@
       </div>
     </footer>
 	<!-- Scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

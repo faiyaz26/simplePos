@@ -16,6 +16,7 @@ return [
 	'logout'				=> 'Logout',
 	'application_settings' 	=> 'Application Settings',
 	'rules'					=> 'Charges',
-	'discounts'  			=> 'Discounts'
+	'discounts'  			=> 'Discounts',
+	'pos'					=> 'POS'
 
 ];

@@ -44,7 +44,7 @@ class SaleApiController extends Controller
             $sale->customer_id  = $data['customerId'] || NULL;
             $sale->service_type = $data['serviceType'];
             $sale->payment_mode = $data['paymentMode'];
-            $sale->reference_number = $data['reference_number'];
+            $sale->reference_number = $data['referenceNumber'];
             $sale->paid         = $data['paid'];
             $sale->comment      = $data['comment'];
             $sale->status       = $data['status'];
@@ -88,7 +88,7 @@ class SaleApiController extends Controller
 
 
         /* Storing Charges */
-        foreach($data['saleCharges'] as $charge){
+        foreach($data['charges'] as $charge){
             try {
                 $saleCharge = new SaleCharge;
                 $saleCharge->sale_id = $sale->id;
@@ -110,7 +110,7 @@ class SaleApiController extends Controller
 
 
         /* Storing Discounts */
-        foreach($data['saleDiscounts'] as $discount){
+        foreach($data['discounts'] as $discount){
             try {
                 $saleDiscount = new SaleDiscount;
                 $saleDiscount->sale_id = $sale->id;
