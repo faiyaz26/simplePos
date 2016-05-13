@@ -23,6 +23,7 @@ class CreateCustomersTable extends Migration
             $table->string('city', 20);
             $table->string('zip', 10);
             $table->text('comment');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

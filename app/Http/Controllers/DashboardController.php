@@ -7,8 +7,11 @@
  */
 namespace App\Http\Controllers;
 use App\Item, App\Customer, App\Sale;
-use App\Supplier, App\Receiving, App\User;
+use App\User;
+use \DB, \Input;
 use App;
+use Symfony\Component\HttpFoundation\Response;
+
 class DashboardController extends Controller {
 
     /*
@@ -32,9 +35,42 @@ class DashboardController extends Controller {
     }
 
 
+    private function getSaleInfoOnADay($date = null){
+        if($date == null){
+            $date = date("Y-m-d");
+        }
+
+        $sales = Sale::where( DB::raw('DATE(created_at)'), '=', $date)->get();
+
+
+        $ret = [];
+
+        $ret['saleCount'] = $sales->count();
+        $ret['saleItemCount'] = 0;
+        $ret['saleAmount'] = 0.0;
+        $ret['salePaymentReceived'] = 0.0;
+
+        foreach($sales as $sale){
+            $ret['saleItemCount'] += $sale->items->count();
+            $ret['saleAmount'] += $sale->saleAmountWithCharge();
+            $ret['salePaymentReceived'] += $sale->paid;
+        }
+
+        return $ret;
+    }
+
     public function index(){
-        $users = User::count();
-        return view('home')
-            ->with('users', $users);
+        $date = date('Y-m-d');
+
+        if(Input::has('date')) {
+            $date = Input::get('date');
+        }
+        $saleInfo = $this->getSaleInfoOnADay($date);
+        $saleInfo['date'] = $date;
+        return view('home')->with('saleInfo', $saleInfo);
+    }
+
+    public function query(){
+
     }
 }

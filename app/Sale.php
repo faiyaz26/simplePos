@@ -50,7 +50,7 @@ class Sale extends Model {
         return $data['grossTotal'];
     }
 
-    private function getDiscountTotal(){
+    private function getDiscountTotal($grossTotal){
         $data = [];
         $data['discounts'] = $this->discounts->toArray();
         $discountSum = 0.0;
@@ -59,7 +59,7 @@ class Sale extends Model {
             $val = 0.0;
 
             if($discount['type'] == 1){ // %
-                $val = ($data['grossTotal'] * $discount['amount'])/100.0;
+                $val = ($grossTotal * $discount['amount'])/100.0;
             }else{ // -
                 $val = ($discount['amount']);
             }
@@ -94,7 +94,7 @@ class Sale extends Model {
 
     public function saleAmountWithOutCharge(){
         $grossSum = $this->getGrossTotal();
-        $discountSum = $this->getDiscountTotal();
+        $discountSum = $this->getDiscountTotal($grossSum);
 
         return $grossSum - $discountSum;
     }

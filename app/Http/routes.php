@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::group(['middleware' => 'language'], function()
 {
     Route::get('/', 'DashboardController@index');
+    Route::get('dashboard/query', 'DashboardController@query');
     Route::get('dashboard', 'DashboardController@index');
     // Authentication routes...
     Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -27,7 +28,11 @@ Route::group(['middleware' => 'language'], function()
     Route::resource('users', 'UserController');
     Route::resource('items', 'ItemController');
     Route::resource('pos', 'PosController');
+    Route::get('customers/query', 'CustomerController@query');
     Route::resource('customers', 'CustomerController');
+
+
+
     Route::resource('rules', 'ChargeRuleController');
     Route::resource('discounts', 'DiscountController');
 

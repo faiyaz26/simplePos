@@ -14,6 +14,7 @@
 	<link href="{{ asset('/css/footer.css') }}" rel="stylesheet">
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet"  crossorigin="anonymous">
 
 	<link rel="shortcut icon" href="{{asset('favicon.ico')}}" type="image/x-icon" />
 

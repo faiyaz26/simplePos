@@ -66,6 +66,9 @@ class CustomerController extends Controller {
 	public function show($id)
 	{
 		//
+		$customer = Customer::find($id);
+
+		return view('customer.show')->with('customer', $customer);
 	}
 
 	/**
@@ -148,6 +151,14 @@ class CustomerController extends Controller {
 
 	public function getCustomerList(){
 		return Response::json(Customer::all());
+	}
+
+
+	public function query(){
+		$query = Input::get('phone');
+		$res   = Customer::where('phone_number', 'LIKE', "%$query%")->get();
+		dd($res);
+		return Response::json($res);
 	}
 
 }
