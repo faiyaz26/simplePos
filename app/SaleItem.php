@@ -29,4 +29,8 @@ class SaleItem extends Model {
     public function totalPrice(){
         return $this->attributes['selling_price'] * $this->attributes['quantity'];
     }
+
+    public function totalCost(){
+        return $this->attributes['cost_price'] * $this->attributes['quantity'];
+    }
 }

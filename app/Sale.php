@@ -31,13 +31,15 @@ class Sale extends Model {
         });
     }
 
-    public function saleAmount(){
-        $data = [];
-        $data = array_merge($data, $this->toArray());
-        $data ['items'] = $this->items->toArray();
-        $data['discounts'] = $this->discounts->toArray();
-        $data['charges']   = $this->charges->toArray();
+    public function getTotalCost(){
+        return $this->items->sum(function($item) {
+            return $item->totalCost();
+        });
+    }
 
+    private function getGrossTotal(){
+        $data = [];
+        $data ['items'] = $this->items->toArray();
         $data['grossTotal'] = 0.0;
 
         foreach($data['items'] as $key => $item){
@@ -45,8 +47,14 @@ class Sale extends Model {
             $data['grossTotal'] += ($item['quantity'] * $item['selling_price']);
         }
 
+        return $data['grossTotal'];
+    }
 
+    private function getDiscountTotal(){
+        $data = [];
+        $data['discounts'] = $this->discounts->toArray();
         $discountSum = 0.0;
+        
         foreach($data['discounts'] as $key => $discount){
             $val = 0.0;
 
@@ -60,13 +68,18 @@ class Sale extends Model {
             $discountSum += $val;
         }
 
+        return $discountSum;
+    }
 
+    private function getChargeTotal($sum){
+        $data = [];
+        $data['charges']   = $this->charges->toArray();
         $chargeSum = 0.0;
         foreach($data['charges'] as $key => $charge){
             $val = 0.0;
 
             if($charge['type'] == 1){
-                $val = (( $data['grossTotal'] - $discountSum) * $charge['amount'])/100.0;
+                $val = (($sum) * $charge['amount'])/100.0;
             }else{
                 $val = ($charge['amount']);
             }
@@ -76,9 +89,20 @@ class Sale extends Model {
 
             $chargeSum += $val;
         }
+        return $chargeSum;
+    }
 
+    public function saleAmountWithOutCharge(){
+        $grossSum = $this->getGrossTotal();
+        $discountSum = $this->getDiscountTotal();
 
-        $data['totalPayment'] = $data['grossTotal'] - $discountSum + $chargeSum;
-        return $data['totalPayment'];
+        return $grossSum - $discountSum;
+    }
+
+    public function saleAmountWithCharge(){
+        $sum  = $this->saleAmountWithOutCharge();
+        $chargeSum = $this->getChargeTotal($sum);
+        $totalPayment = $sum + $chargeSum;
+        return $totalPayment;
     }
 }

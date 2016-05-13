@@ -24,9 +24,16 @@ class SaleController extends Controller{
         $this->middleware('auth');
     }
 
+    private function getTotalSaleAmountWithCharge($data){
+    	$ret = 0.0;
+    	foreach($data as $sale){
+    		$ret += $sale->saleAmountWithCharge();
+    	}
+    	return $ret;
+    }
+
     public function index(){
-        $data = Sale::find(15)->saleAmount();
-        dd($data);
-        return view('sale.index');
+        $data = Sale::all()->sortByDesc("id");;
+        return view('sale.index')->with('sales', $data);
     }
 }

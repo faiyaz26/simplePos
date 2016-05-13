@@ -49,6 +49,7 @@
 						<li><a href="{{ url('/items') }}">{{trans('menu.items')}}</a></li>
                         <li><a href="{{ url('/rules') }}">{{trans('menu.rules')}}</a></li>
                         <li><a href="{{ url('/discounts') }}">{{trans('menu.discounts')}}</a></li>
+						<li><a href="{{ url('/sales') }}">Sales</a></li>
 						<li><a href="{{ url('/pos') }}">{{trans('menu.pos')}}</a></li>
 						<!--
 						<li class="dropdown">
