@@ -1,65 +1,12 @@
 #!/bin/bash
-
-# Exit on first error.
 set -e
 
-# OpenShift sets GIT_DIR to . which terminates pull with an error:
-# Not a git repository: '.'
-unset GIT_DIR
+# Build PHP extra's
+# Update conf/ini filesand install pecl extensions
+${OPENSHIFT_PHP_DIR}/bin/control build
 
-umask 077
-
-# Load common
-source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/common
-
-# Configure versions
-NGINX_VERSION='1.7.10'
-ZLIB_VERSION='1.2.8'
-PCRE_VERSION='8.38'
-
-PHP_VERSION='5.6.6'
-ICU_VERSION='54.1'
-
-LIBMCRYPT_VERSION='2.5.8'
-LIBTOOL_VERSION='2.4.6'
-RE2C_VERSION='0.14.3'
-BISON_VERSION='2.7.1'
-
-# Uncomment the following install it.
-#NODE_VERSION='0.12.0'
-#PHALCON_VERSION='1.3.4'
-
-declare -A PHP_PECL
-declare -A PHP_PECL_CONFIGURE
-PHP_PECL=( ["mongo"]='1.6.4' ["apcu"]='4.0.7' )
-PHP_PECL_CONFIGURE=( )
-
-# Setup dir references
-ROOT_DIR=${OPENSHIFT_RUNTIME_DIR}
-BUILD_DIR=${OPENSHIFT_TMP_DIR}/build
-CONFIG_DIR=${OPENSHIFT_DIY_DIR}/conf
-TEMPLATE_DIR=${OPENSHIFT_REPO_DIR}/.openshift/tmpl
-
-# Push the libs path to the PATH
-export PATH=${ROOT_DIR}/libs/bin:$PATH
-
-# Load functions
-source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_util
-source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_nginx
-source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_php_libs
-source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_php
-
-# Check nginx
-check_nginx
-
-# Check PHP
-check_php
-
-# Check pecl extensions
-for ext in "${!PHP_PECL[@]}"; do
-    check_pecl ${ext} ${PHP_PECL["$ext"]} ${PHP_PECL_CONFIGURE["$ext"]};
-done
-
-# Extra
-source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_node
-source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_phalcon
+# Build Laravel Framework
+# Update composer executable
+source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_laravel
+update_composer
+check_laravel

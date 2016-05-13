@@ -1,8 +1,17 @@
 #!/bin/bash
-# This deploy hook gets executed after dependencies are resolved and the
-# build hook has been run but before the application has been started back
-# up again.  This script gets executed directly, so it could be python, php,
-# ruby, etc.
+
+# The pre_start_cartridge and pre_stop_cartridge hooks are *SOURCED*
+# immediately before (re)starting or stopping the specified cartridge.
+# They are able to make any desired environment variable changes as
+# well as other adjustments to the application environment.
+
+# The post_start_cartridge and post_stop_cartridge hooks are executed
+# immediately after (re)starting or stopping the specified cartridge.
+
+# Exercise caution when adding commands to these hooks.  They can
+# prevent your application from stopping cleanly or starting at all.
+# Application start and stop is subject to different timeouts
+# throughout the system.
 
 source $OPENSHIFT_CARTRIDGE_SDK_BASH
 
@@ -55,16 +64,3 @@ else
     set_env_var 'DB_CONNECTION' $DB_CONNECTION $OPENSHIFT_HOMEDIR/.env/user_vars
   fi
 fi
-
-# Use repository .env
-if [ -f ${OPENSHIFT_REPO_DIR}/.openshift/tmpl/.env.tmpl ]; then
-    echo "Creating enviroments settings file '.env' ..."
-    cp -f ${OPENSHIFT_REPO_DIR}/.openshift/tmpl/.env.tmpl ${OPENSHIFT_REPO_DIR}/.env
-else
-    echo "Enviroments settings file '.env' not found ..."
-fi
-
-echo "Running 'php artisan migrate --force'..."
-pushd ${OPENSHIFT_REPO_DIR} > /dev/null
-php artisan migrate --force
-popd > /dev/null
