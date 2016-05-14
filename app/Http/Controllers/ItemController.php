@@ -53,12 +53,13 @@ class ItemController extends Controller {
         $items = new Item;
         $items->code = Input::get('code');
         $items->name = Input::get('name');
+        $items->category = Input::get('category');
         $items->description = Input::get('description');
         $items->cost_price = Input::get('cost_price');
         $items->selling_price = Input::get('selling_price');
         $items->save();
 
-        Session::flash('message', 'You have successfully added item');
+        Session::flash('message', 'You have successfully added item named '. $items->name);
         return Redirect::to('items/create');
     }
 
@@ -83,12 +84,13 @@ class ItemController extends Controller {
         // save update
         $items->code = Input::get('code');
         $items->name = Input::get('name');
+        $items->category = Input::get('category');
         $items->description = Input::get('description');
         $items->cost_price = Input::get('cost_price');
         $items->selling_price = Input::get('selling_price');
         $items->save();
 
-        Session::flash('message', 'You have successfully updated item');
+        Session::flash('message', 'You have successfully updated item named '. $items->name);
         return Redirect::to('items');
     }
 

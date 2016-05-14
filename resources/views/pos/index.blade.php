@@ -79,8 +79,8 @@
                             <div class="col-md-12" style="min-height: 300px;">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th>{{trans('sale.item_code')}}</th>
                                         <th>{{trans('sale.item_name')}}</th>
+                                        <th>Category</th>
                                         <th>{{trans('sale.price')}}</th>
                                         <th>{{trans('sale.quantity')}}</th>
                                         <th>{{trans('sale.total')}}</th>
@@ -88,10 +88,10 @@
                                     </tr>
                                     <tr ng-repeat="item in sale.saleItems">
                                         <td>
-                                            @{{ item.code }}
+                                            @{{ item.name }}
                                         </td>
                                         <td>
-                                            @{{ item.name }}
+                                            @{{ item.category }}
                                         </td>
                                         <td>
                                             @{{ item.selling_price }}
