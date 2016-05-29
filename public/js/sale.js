@@ -213,10 +213,12 @@
                 return;
             }
 
+            /*
             if($scope.getDue() < 0){
                 alert("You cannot complete sale unless due amount is non negative");
                 return;
             }
+            */
 
             if(window.confirm("Are you sure to complete the sale ?")){
 
