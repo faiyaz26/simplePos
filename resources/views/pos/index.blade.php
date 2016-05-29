@@ -1,7 +1,7 @@
 @extends('app')
 @section('content')
 {!! Html::script('js/angular.min.js', array('type' => 'text/javascript')) !!}
-{!! Html::script('js/sale.js', array('type' => 'text/javascript')) !!}
+{!! Html::script('js/sale.js?v=1', array('type' => 'text/javascript')) !!}
 <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css ">
 <script type="text/javascript" src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-selectize2/dist/angular-selectize.js"></script>
