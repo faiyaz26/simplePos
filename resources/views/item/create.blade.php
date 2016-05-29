@@ -19,6 +19,10 @@
 					{!! Form::label('code', trans('item.item_code')) !!}
 					{!! Form::text('code', Input::old('code'), array('class' => 'form-control')) !!}
 					</div>
+					<div class="form-group">
+					{!! Form::label('category', 'Category*') !!}
+					{!! Form::select('category', ['drinks' => 'Drinks', 'main_course' => 'Main Course'], Input::old('category'), ['placeholder' => 'Select Category', 'class' => 'form-control']) !!}
+					</div>
 
 					<div class="form-group">
 					{!! Form::label('name', trans('item.item_name').' *') !!}

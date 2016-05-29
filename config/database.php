@@ -54,10 +54,10 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'forge'),
-            'username'  => env('DB_USERNAME', 'forge'),
-            'password'  => env('DB_PASSWORD', ''),
+            'host'      => env('DB_HOST', getenv('OPENSHIFT_MYSQL_DB_HOST')),
+            'database'  => env('DB_DATABASE', getenv('OPENSHIFT_APP_NAME')),
+            'username'  => env('DB_USERNAME', getenv('OPENSHIFT_MYSQL_DB_USERNAME')),
+            'password'  => env('DB_PASSWORD', getenv('OPENSHIFT_MYSQL_DB_PASSWORD')),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

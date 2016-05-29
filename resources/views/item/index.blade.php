@@ -18,8 +18,8 @@
     <thead>
         <tr>
             <td>{{trans('item.item_id')}}</td>
-            <td>{{trans('item.item_code')}}</td>
             <td>{{trans('item.item_name')}}</td>
+            <td>Category</td>
             <td>{{trans('item.cost_price')}}</td>
             <td>{{trans('item.selling_price')}}</td>
             <td>&nbsp;</td>
@@ -29,8 +29,8 @@
     @foreach($item as $value)
         <tr>
             <td>{{ $value->id }}</td>
-            <td>{{ $value->code }}</td>
             <td>{{ $value->name }}</td>
+            <td>{{ $value->category }}</td>
             <td>{{ $value->cost_price }}</td>
             <td>{{ $value->selling_price }}</td>
             <td>

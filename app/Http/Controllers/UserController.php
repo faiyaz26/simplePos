@@ -86,7 +86,7 @@ class UserController extends Controller {
      */
     public function update($id)
     {
-        if($id == 1)
+        if(0)
         {
             Session::flash('message', 'You cannot edit admin on Simple Pos');
             Session::flash('alert-class', 'alert-danger');

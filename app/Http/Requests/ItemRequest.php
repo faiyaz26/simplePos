@@ -25,6 +25,7 @@ class ItemRequest extends Request {
 			'name' => 'required',
 			'cost_price' => 'numeric|required',
 			'selling_price' => 'numeric|required',
+			'category'	=> 'required'
 		];
 	}
 
