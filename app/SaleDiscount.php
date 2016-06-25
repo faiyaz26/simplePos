@@ -18,4 +18,8 @@ class SaleDiscount extends Model {
         return $this->belongsTo('App\Sale');
     }
 
+    public function original(){
+        return $this->belongsTo('App\Discount','discount_id', 'id');
+    }
+
 }

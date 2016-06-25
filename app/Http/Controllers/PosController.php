@@ -12,7 +12,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use \Auth, \Redirect, \Validator, \Input, \Session;
 use Illuminate\Http\Request;
-
+use App\Sale;
 
 class PosController extends Controller
 {
@@ -22,6 +22,19 @@ class PosController extends Controller
     }
 
     public function index(){
-        return view('pos.index');
+        $data = array(
+          'edit' => 0,
+            'id' => 0
+        );
+        return view('pos.index')->with('data', $data);
+    }
+
+    public function edit($id){
+        $check = Sale::findOrFail($id);
+        $data = array(
+            'edit' => 0,
+            'id' => $id
+        );
+        return view('pos.index')->with('data', $data);
     }
 }

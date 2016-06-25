@@ -19,7 +19,7 @@ class SaleItem extends Model {
     }
 
     public function original(){
-        return $this->belongsTo('App\Item');
+        return $this->belongsTo('App\Item','item_id', 'id');
     }
 
     /**

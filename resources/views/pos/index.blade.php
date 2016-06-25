@@ -1,10 +1,12 @@
 @extends('app')
 @section('content')
 {!! Html::script('js/angular.min.js', array('type' => 'text/javascript')) !!}
-{!! Html::script('js/sale.js?v=1', array('type' => 'text/javascript')) !!}
-<link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css ">
-<script type="text/javascript" src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
-<script type="text/javascript" src="bower_components/angular-selectize2/dist/angular-selectize.js"></script>
+{!! Html::script('js/sale.js?v=121', array('type' => 'text/javascript')) !!}
+{!! Html::style('bower_components/selectize/dist/css/selectize.default.css') !!}
+{!! Html::script('bower_components/selectize/dist/js/standalone/selectize.min.js', array('type' => 'text/javascript')) !!}
+{!! Html::script('bower_components/angular-selectize2/dist/angular-selectize.js', array('type' => 'text/javascript')) !!}
+
+
 
 <div class="container-fluid">
    <div class="row">
@@ -19,7 +21,7 @@
                 @endif
                 {!! Html::ul($errors->all()) !!}
                 
-                <div class="row" ng-controller="SearchItemCtrl">
+                <div class="row" ng-controller="PosCtrl">
 
                     <div class="col-md-4 ">
                         <label>{{trans('sale.search_item')}} <input ng-model="searchKeyword" class="form-control"></label>
@@ -265,4 +267,9 @@
         </div>
     </div>
 </div>
+    <script>
+        window.saleId = {{ $data['id'] }};
+        window.edit   = {{ $data['edit'] }};
+        window.url    = "{{ url('/') }}";
+    </script>
 @endsection

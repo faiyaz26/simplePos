@@ -1,5 +1,5 @@
 (function(){
-    var app = angular.module('tutapos', ['selectize']);
+    var app = angular.module('simplePos', ['selectize']);
     app.directive('ngReallyClick', [function() {
         return {
             restrict: 'A',
@@ -15,12 +15,15 @@
     }]);
 
 
-    app.controller("SearchItemCtrl", [ '$scope', '$http', function($scope, $http, $window) {
+    app.controller("PosCtrl", [ '$scope', '$http', function($scope, $http, $window) {
         $scope.onlyNumbers = /^\d+$/;
 
         $scope.searchButtonText = "Fetch";
         $scope.test = "false";
 
+        $scope.url = window.url + '/api/v1';
+
+        console.log($scope.url);
 
         $scope.sale = {};
 
@@ -32,7 +35,6 @@
 
 
         $scope.sale = {
-
             saleItems : [],
             discounts    : [],
             customerId   : 0,
@@ -51,7 +53,7 @@
             $scope.searchButtonText = "Fetching";
             // Do your searching here
 
-            $http.get('api/v1/customers').success(function (data, status, headers, config) {
+            $http.get($scope.url+'/customers').success(function (data, status, headers, config) {
                 //  console.log('sdsd', data);
                 $scope.searchButtonText = "Fetch";
                 $scope.customerList = data;
@@ -59,26 +61,41 @@
         }
 
 
-        $http.get('api/v1/items').success(function(data) {
+        $http.get($scope.url+'/items').success(function(data) {
             $scope.items = data;
         });
 
 
         /* Get Customer */
-        $http.get('api/v1/customers').success(function(data, status, headers, config) {
+        $http.get($scope.url+'/customers').success(function(data, status, headers, config) {
             $scope.customerList = data;
         });
 
 
         /* Get Charges */
-        $http.get('api/v1/charges').success(function(data, status, headers, config) {
+        $http.get($scope.url+'/charges').success(function(data, status, headers, config) {
             $scope.charges = data;
         });
 
-        $http.get('api/v1/discounts').success(function(data, status, headers, config) {
+        $http.get($scope.url+'/discounts').success(function(data, status, headers, config) {
             $scope.discountOptions = data;
         });
 
+        if(window.id != 0){
+            $http.get($scope.url+'/sales/'+window.saleId).success(function(data, status, headers, config){
+                $scope.sale = {
+                    saleItems : data.items,
+                    discounts    : data.discounts,
+                    customerId   : data.customer_id,
+                    serviceType  : data.service_type,
+                    paymentMode  : data.payment_mode,
+                    referenceNumber : data.reference_number,
+                    comment      : data.comment,
+                    paid         : data.paid,
+                    status       : data.status
+                };
+            });
+        }
 
         $scope.customerListConfig = {
             create: false,
@@ -236,9 +253,9 @@
 
 
 
-            $http.post("api/v1/sales", data).success(function(newData, status) {
+            $http.post($scope.url+"/sales", data).success(function(newData, status) {
                 if(newData.data.status == "done"){
-                    window.location.href = '/receipt/'+newData.data.id;
+                    window.location.href = window.url+'/receipt/'+newData.data.id;
                 }
                 $scope.clearSaleData();
                 return ;
