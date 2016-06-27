@@ -1,12 +1,13 @@
 @extends('app')
 @section('content')
-{!! Html::script('js/angular.min.js', array('type' => 'text/javascript')) !!}
+{!! Html::script('bower_components/angular/angular.min.js', array('type' => 'text/javascript')) !!}
 {!! Html::script('js/sale.js?v=121', array('type' => 'text/javascript')) !!}
 {!! Html::style('bower_components/selectize/dist/css/selectize.default.css') !!}
 {!! Html::script('bower_components/selectize/dist/js/standalone/selectize.min.js', array('type' => 'text/javascript')) !!}
 {!! Html::script('bower_components/angular-selectize2/dist/angular-selectize.js', array('type' => 'text/javascript')) !!}
-
-
+{!! Html::script('bower_components/angular-bootstrap/ui-bootstrap.min.js', array('type' => 'text/javascript')) !!}
+{!! Html::script('bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js', array('type' => 'text/javascript')) !!}
+{!! Html::script('bower_components/angular-prompt/dist/angular-prompt.min.js', array('type' => 'text/javascript')) !!}
 
 <div class="container-fluid">
    <div class="row">
@@ -159,6 +160,13 @@
                                     </div>
                                     <div>&nbsp;</div>
                                     <div class="form-group">
+                                        <label for="employee" class="col-sm-4 control-label">{{trans('sale.table_info')}}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="tableInfo" id="tableInfo" ng-model="sale.tableInfo"/>
+                                        </div>
+                                    </div>
+                                    <div>&nbsp;</div>
+                                    <div class="form-group">
                                         <label for="employee" class="col-sm-4 control-label">{{trans('sale.comments')}}</label>
                                         <div class="col-sm-8">
                                         <input type="text" class="form-control" name="comments" id="comments" ng-model="sale.comment"/>
@@ -245,8 +253,8 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-10 col-sm-offset-1">
-                                            <button type="button" class="btn btn-success btn-block" ng-click="storeSaleData()">{{trans('sale.submit')}}</button>
-                                            <button type="button" class="btn btn-warning btn-block" >{{trans('sale.hold')}}</button>
+                                            <button type="button" class="btn btn-success btn-block" ng-click="completeSale()">{{trans('sale.submit')}}</button>
+                                            <button type="button" class="btn btn-warning btn-block" ng-click="holdSale()">{{trans('sale.hold')}}</button>
                                             <button type="button" class="btn btn-danger btn-block" ng-really-message="Are you sure to clear data ?"  ng-really-click="clearSaleData()">{{trans('sale.clear')}}</button>
                                         </div>
 

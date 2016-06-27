@@ -31,6 +31,10 @@ class PosController extends Controller
 
     public function edit($id){
         $check = Sale::findOrFail($id);
+
+        if($check->status == 'done'){
+            return "You cannot edit a completed sale\n";
+        }
         $data = array(
             'edit' => 0,
             'id' => $id

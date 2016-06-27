@@ -1,6 +1,7 @@
 {
   "name": "Simple-POS",
   "dependencies": {
-    "angular-selectize2": "^3.0.1"
+    "angular-selectize2": "^3.0.1",
+    "angular-prompt": "^1.2.0"
   }
 }

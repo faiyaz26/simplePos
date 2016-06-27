@@ -32,4 +32,5 @@ return [
 	'hold'  => 'Hold',
 	'clear' => 'Clear',
     'sum'  => 'Gross Total',
+	'table_info' => 'Table Info'
 ];

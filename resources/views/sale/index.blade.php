@@ -21,8 +21,8 @@
             <td>Date</td>
             <td>Item Count</td>
             <td>Total Payment</td>
-            <td>Total Cost</td>
-            <td>Profit </td>
+            <td>Table Info</td>
+            <td>Comments</td>
             <td> Status </td>
             <td>&nbsp</td>
         </tr>
@@ -34,8 +34,8 @@
             <td>{{ $sale->updated_at }}</td>
             <td>{{ $sale->items->count() }}</td>
             <td>{{ $sale->saleAmountWithCharge() }}</td>
-            <td>{{ $sale->getTotalCost() }}</td>
-            <td>{{ $sale->saleAmountWithOutCharge() - $sale->getTotalCost() }}</td>
+            <td>{{ $sale->table_info }}</td>
+            <td>{{ substr($sale->comments, 0, 20) }}</td>
             <td>{{ $sale->status }} </td>
             <td> <a href="{{ url('/receipt/'.$sale->id)}}"> Receipt </a> </td>
         </tr>

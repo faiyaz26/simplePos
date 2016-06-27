@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSoftdeletesToSomeTable extends Migration
+class AddTableNoFieldToSales extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AddSoftdeletesToSomeTable extends Migration
     public function up()
     {
         //
-        Schema::table('users', function ($table) {
-            $table->softDeletes();
+        Schema::table('sales', function ($table) {
+            $table->string('table_info', 30)->nullable();
         });
-
 
     }
 
@@ -29,9 +28,8 @@ class AddSoftdeletesToSomeTable extends Migration
     {
         //
 
-        Schema::table('users', function ($table) {
-            $table->dropSoftDeletes();
+        Schema::table('sales', function ($table) {
+            $table->dropColumn('table_info');
         });
-
     }
 }

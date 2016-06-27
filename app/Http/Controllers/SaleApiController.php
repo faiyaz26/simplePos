@@ -72,6 +72,7 @@ class SaleApiController extends Controller
             $sale->service_type = $data['serviceType'];
             $sale->payment_mode = $data['paymentMode'];
             $sale->reference_number = $data['referenceNumber'];
+            $sale->table_info   = $data['tableInfo'];
             $sale->paid         = $data['paid'];
             $sale->comment      = $data['comment'];
             $sale->status       = $data['status'];
@@ -190,6 +191,7 @@ class SaleApiController extends Controller
             $sale->service_type = $data['serviceType'];
             $sale->payment_mode = $data['paymentMode'];
             $sale->reference_number = $data['referenceNumber'];
+            $sale->table_info   = $data['tableInfo'];
             $sale->paid         = $data['paid'];
             $sale->comment      = $data['comment'];
             $sale->status       = $data['status'];

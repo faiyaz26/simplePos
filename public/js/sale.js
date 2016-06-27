@@ -1,5 +1,5 @@
 (function(){
-    var app = angular.module('simplePos', ['selectize']);
+    var app = angular.module('simplePos', ['ui.bootstrap','selectize','cgPrompt']);
     app.directive('ngReallyClick', [function() {
         return {
             restrict: 'A',
@@ -15,7 +15,7 @@
     }]);
 
 
-    app.controller("PosCtrl", [ '$scope', '$http', function($scope, $http, $window) {
+    app.controller("PosCtrl",function($scope, $http, $window, prompt) {
         $scope.onlyNumbers = /^\d+$/;
 
         $scope.searchButtonText = "Fetch";
@@ -41,9 +41,11 @@
             serviceType  : 'Check-In',
             paymentMode  : 'Cash',
             referenceNumber : '',
+            tableInfo    : '',
             comment      : '',
             paid         : 0,
-            status       : 'done'
+            status       : 'on-hold',
+            pinCode      : ''
         }
 
 
@@ -81,7 +83,7 @@
             $scope.discountOptions = data;
         });
 
-        if(window.id != 0){
+        if(window.saleId != 0){
             $http.get($scope.url+'/sales/'+window.saleId).success(function(data, status, headers, config){
                 $scope.sale = {
                     saleItems : data.items,
@@ -90,6 +92,7 @@
                     serviceType  : data.service_type,
                     paymentMode  : data.payment_mode,
                     referenceNumber : data.reference_number,
+                    tableInfo    : data.table_info,
                     comment      : data.comment,
                     paid         : data.paid,
                     status       : data.status
@@ -224,23 +227,87 @@
             return val;
         }
 
-        $scope.storeSaleData = function (){
+
+        $scope.completeSale = function(){
             if($scope.sale.saleItems.length == 0){
                 alert("No item added to the list, please add some");
                 return;
             }
 
-            /*
-            if($scope.getDue() < 0){
-                alert("You cannot complete sale unless due amount is non negative");
+
+            if($scope.getDue() < 0) {
+                alert("You cannot complete sale unless due amount is non negative, please click on hold button");
                 return;
             }
-            */
 
-            if(window.confirm("Are you sure to complete the sale ?")){
+            prompt({
+                "title": "Confirmartion",
+                "message": "Are you sure to complete the sale ?",
+                "buttons": [
+                    {
+                        "label": "Yes",
+                        "cancel": false,
+                        "primary": true
+                    },
+                    {
+                        "label": "No",
+                        "cancel": true,
+                        "primary": false
+                    }
+                ]
+            }).then(function(){
+                //he hit ok and not cancel
+                $scope.storeSaleData();
+            });
 
-            }else{
+            $scope.storeSaleData();
+            return;
+        }
+
+        $scope.holdSale = function(){
+            if($scope.sale.saleItems.length == 0){
+                alert("No item added to the list, please add some");
                 return;
+            }
+
+/*
+            if($scope.getDue() < 0) {
+                alert("You cannot complete sale unless due amount is non negative, please click on hold button");
+                return;
+            }
+*/
+
+            prompt({
+                "title": "Confirmartion",
+                "message": "Are you sure to hold the sale ?",
+                "buttons": [
+                    {
+                        "label": "Yes",
+                        "cancel": false,
+                        "primary": true
+                    },
+                    {
+                        "label": "No",
+                        "cancel": true,
+                        "primary": false
+                    }
+                ]
+            }).then(function(){
+                //he hit ok and not cancel
+                $scope.storeSaleData();
+            });
+
+
+
+            return;
+        }
+
+        $scope.storeSaleData = function (){
+
+            if($scope.getDue() < 0) {
+                $scope.sale.status = "on-hold";
+            }else{
+                $scope.sale.status = "done";
             }
 
             $scope.sale.charges = $scope.charges;
@@ -252,17 +319,13 @@
 
             if(window.saleId == 0){
                 $http.post($scope.url+"/sales", data).success(function(newData, status) {
-                    if(newData.data.status == "done"){
-                        window.location.href = window.url+'/receipt/'+newData.data.id;
-                    }
+                    window.location.href = window.url+'/receipt/'+newData.data.id;
                     $scope.clearSaleData();
                     return ;
                 });
             }else{
                 $http.put($scope.url+"/sales/"+window.saleId, data).success(function(newData, status) {
-                    if(newData.data.status == "done"){
-                        window.location.href = window.url+'/receipt/'+newData.data.id;
-                    }
+                    window.location.href = window.url+'/receipt/'+newData.data.id;
                     $scope.clearSaleData();
                     return ;
                 });
@@ -273,18 +336,19 @@
 
         $scope.clearSaleData = function(){
             $scope.sale = {
-
                 saleItems : [],
                 discounts    : [],
                 customerId   : 0,
                 serviceType  : 'Check-In',
                 paymentMode  : 'Cash',
                 referenceNumber : '',
+                tableInfo    : '',
                 comment      : '',
                 paid         : 0,
-                status       : 'done'
+                status       : 'on-hold',
+                pinCode      : ''
             }
         }
 
-    }]);
+    });
 })();
