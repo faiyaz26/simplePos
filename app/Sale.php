@@ -63,6 +63,7 @@ class Sale extends Model {
             }else{ // -
                 $val = ($discount['amount']);
             }
+
             $data['discounts'][$key]['name'] = Discount::find($discount['discount_id'])->name;
             $data['discounts'][$key]['value'] = $val;
             $discountSum += $val;

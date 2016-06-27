@@ -250,16 +250,24 @@
                 saleData: JSON.stringify($scope.sale)
             };
 
+            if(window.saleId == 0){
+                $http.post($scope.url+"/sales", data).success(function(newData, status) {
+                    if(newData.data.status == "done"){
+                        window.location.href = window.url+'/receipt/'+newData.data.id;
+                    }
+                    $scope.clearSaleData();
+                    return ;
+                });
+            }else{
+                $http.put($scope.url+"/sales/"+window.saleId, data).success(function(newData, status) {
+                    if(newData.data.status == "done"){
+                        window.location.href = window.url+'/receipt/'+newData.data.id;
+                    }
+                    $scope.clearSaleData();
+                    return ;
+                });
+            }
 
-
-
-            $http.post($scope.url+"/sales", data).success(function(newData, status) {
-                if(newData.data.status == "done"){
-                    window.location.href = window.url+'/receipt/'+newData.data.id;
-                }
-                $scope.clearSaleData();
-                return ;
-            });
         }
 
 

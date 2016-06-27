@@ -41,6 +41,7 @@ class SaleApiController extends Controller
         foreach($sale->items as $item){
             $curData = $item->toArray();
             $originalItem = $item->original;
+            $curData['id'] = $originalItem->id;
             $curData['name']= $originalItem->name;
             $curData['category'] = $originalItem->category;
             $ret['items'][] = $curData;
