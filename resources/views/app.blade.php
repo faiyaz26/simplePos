@@ -50,7 +50,14 @@
 						<li><a href="{{ url('/items') }}">{{trans('menu.items')}}</a></li>
                         <li><a href="{{ url('/rules') }}">{{trans('menu.rules')}}</a></li>
                         <li><a href="{{ url('/discounts') }}">{{trans('menu.discounts')}}</a></li>
-						<li><a href="{{ url('/sales') }}">Sales</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sales <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="{{ url('/sales') }}">All Sales</a></li>
+								<li><a href="{{ url('/sales?q=on-hold') }}">Sales On Hold</a></li>
+							</ul>
+						</li>
+
 						<li><a href="{{ url('/pos') }}">{{trans('menu.pos')}}</a></li>
 						<!--
 						<li class="dropdown">
@@ -72,7 +79,10 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
+								@if ( Auth::user()->username == 'admin')
 								<li><a href="{{ url('/settings') }}">{{trans('menu.application_settings')}}</a></li>
+								@endif
+
 								<li class="divider"></li>
 								<li><a href="{{ url('/auth/logout') }}">{{trans('menu.logout')}}</a></li>
 							</ul>

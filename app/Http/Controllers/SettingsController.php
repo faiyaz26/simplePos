@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use \Auth, \Redirect, \Validator, \Input, \Session;
 use \DB;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class SettingsController extends Controller
@@ -20,12 +21,17 @@ class SettingsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+        if(Auth::user()->username != 'admin'){
+            return abort(403);
+        }
     }
 
     public function index(){
         $ret = DB::table('settings')->get();
         $data['company'] = $ret[2]->value;
         $data['receiptHeader'] = $ret[3]->value;
+        $data['pinCode'] = $ret[4]->value;
         return view('settings.index')->with('data', $data);
     }
 
@@ -35,6 +41,7 @@ class SettingsController extends Controller
         $ret = DB::table('settings')->get();
         $data['company'] = $ret[2]->value;
         $data['receiptHeader'] = $ret[3]->value;
+        $data['pinCode'] = $ret[4]->value;
         Session::flash('message', 'Settings updated');
         return view('settings.index')->with('data', $data);
     }

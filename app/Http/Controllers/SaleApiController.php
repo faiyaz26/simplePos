@@ -163,6 +163,7 @@ class SaleApiController extends Controller
             'activity' => 'insert',
             'sale_id'  => $sale->id,
             'user_id'  => Auth::user()->id,
+            'user_name' => Auth::user()->username,
             'data' => $data
         );
 
@@ -179,6 +180,13 @@ class SaleApiController extends Controller
     public function update($id){
         $data = Input::get('saleData');
         $data = json_decode($data, true);
+
+        $ret = DB::table('settings')->where('key', 'pinCode')->first();
+
+        if($data['pinCode'] != $ret->value){
+            return Response::json(array('success' => false, "message" => 'Pin Code is not correct'));
+        }
+
 
         DB::beginTransaction();
 
@@ -294,6 +302,7 @@ class SaleApiController extends Controller
             'activity' => 'update',
             'sale_id'  => $sale->id,
             'user_id'  => Auth::user()->id,
+            'user_name' => Auth::user()->username,
             'data' => $data
         );
 
@@ -307,6 +316,15 @@ class SaleApiController extends Controller
     }
 
     public function destroy($id){
+
+        $data = Input::get('pinCode');
+
+        $ret = DB::table('settings')->where('key', 'pinCode')->first();
+
+        if($data  != $ret){
+            return Response::json(array('success' => false, "message" => 'Pin Code is not correct'));
+        }
+
         DB::beginTransaction();
 
         try {
@@ -327,6 +345,7 @@ class SaleApiController extends Controller
             $logData = array(
                 'activity' => 'delete',
                 'sale_id'  => $sale->id,
+                'user_name' => Auth::user()->username,
                 'user_id'  => Auth::user()->id
             );
 

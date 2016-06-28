@@ -34,6 +34,10 @@ class SaleController extends Controller{
 
     public function index(){
         $data = Sale::all()->sortByDesc("id");;
+
+        if(Input::get('q')){
+            $data = Sale::where('status', Input::get('q'))->get()->sortByDesc('id');
+        }
         return view('sale.index')->with('sales', $data);
     }
 }

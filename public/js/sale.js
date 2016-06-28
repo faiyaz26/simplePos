@@ -240,27 +240,53 @@
                 return;
             }
 
-            prompt({
-                "title": "Confirmartion",
-                "message": "Are you sure to complete the sale ?",
-                "buttons": [
-                    {
-                        "label": "Yes",
-                        "cancel": false,
-                        "primary": true
-                    },
-                    {
-                        "label": "No",
-                        "cancel": true,
-                        "primary": false
-                    }
-                ]
-            }).then(function(){
-                //he hit ok and not cancel
-                $scope.storeSaleData();
-            });
 
-            $scope.storeSaleData();
+            if(window.saleId == 0){
+                prompt({
+                    "title": "Confirmation",
+                    "message": "Are you sure to complete the sale ?",
+                    "buttons": [
+                        {
+                            "label": "Yes",
+                            "cancel": false,
+                            "primary": true
+                        },
+                        {
+                            "label": "No",
+                            "cancel": true,
+                            "primary": false
+                        }
+                    ]
+                }).then(function(){
+                    //he hit ok and not cancel
+                    $scope.storeSaleData();
+                });
+            }else{
+                prompt({
+                    "title": "Confirmation",
+                    "message": "Please put the pin-code ?",
+                    "input": true,
+                    "label": "Pin-code",
+                    "value": "",
+                    "buttons": [
+                        {
+                            "label": "Submit",
+                            "cancel": false,
+                            "primary": true
+                        },
+                        {
+                            "label": "Cancel",
+                            "cancel": true,
+                            "primary": false
+                        }
+                    ]
+                }).then(function(pinCode){
+                    //he hit ok and not cancel
+                    $scope.sale.pinCode = pinCode;
+                    $scope.storeSaleData();
+                });
+            }
+
             return;
         }
 
@@ -278,7 +304,7 @@
 */
 
             prompt({
-                "title": "Confirmartion",
+                "title": "Confirmation",
                 "message": "Are you sure to hold the sale ?",
                 "buttons": [
                     {
@@ -319,15 +345,27 @@
 
             if(window.saleId == 0){
                 $http.post($scope.url+"/sales", data).success(function(newData, status) {
+                    if(newData.success == false){
+                        alert(newData.message);
+                        return;
+                    }
                     window.location.href = window.url+'/receipt/'+newData.data.id;
                     $scope.clearSaleData();
                     return ;
+                }).error(function(data,status,headers,config) {
+                    alert("Something went wrong, please try again");
                 });
             }else{
                 $http.put($scope.url+"/sales/"+window.saleId, data).success(function(newData, status) {
+                    if(newData.success == false){
+                        alert(newData.message);
+                        return;
+                    }
                     window.location.href = window.url+'/receipt/'+newData.data.id;
                     $scope.clearSaleData();
                     return ;
+                }).error(function(data,status,headers,config) {
+                    alert("Something went wrong, please try again");
                 });
             }
 

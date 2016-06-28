@@ -37,7 +37,12 @@
             <td>{{ $sale->table_info }}</td>
             <td>{{ substr($sale->comments, 0, 20) }}</td>
             <td>{{ $sale->status }} </td>
-            <td> <a href="{{ url('/receipt/'.$sale->id)}}"> Receipt </a> </td>
+            <td>
+                @if ($sale->status == 'on-hold')
+                    <a target="_blank" href="{{ url('/pos/'.$sale->id.'/edit')}}"> Edit </a> |
+                @endif
+                <a target = "_blank" href="{{ url('/receipt/'.$sale->id)}}"> Receipt </a>
+            </td>
         </tr>
     @endforeach
     </tbody>

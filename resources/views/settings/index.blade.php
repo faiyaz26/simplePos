@@ -24,6 +24,12 @@
                                     <div class="form-group">
                                         {!! Form::label('receiptHeader', 'Money Receipt Header') !!}
                                         {!! Form::textarea('receiptHeader', $data['receiptHeader'], array('class' => 'form-control')) !!}
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        {!! Form::label('pinCode', 'Pin Code') !!}
+                                        {!! Form::text('pinCode', $data['pinCode'], array('class' => 'form-control')) !!}
                                     </div>
                                     {!! Form::submit(trans('item.submit'), array('class' => 'btn btn-primary')) !!}
                                 {!! Form::close() !!}
