@@ -27,6 +27,10 @@ class SettingsSeeder extends Seeder
             array(
                 'key' => 'receiptHeader',
                 'value' => ''
+            ),
+            array(
+                'key' => 'pinCode',
+                'value'=> '1234'
             )
         );
         DB::table('settings')->insert($data);
