@@ -38,6 +38,7 @@ class SettingsController extends Controller
     public function store(){
         DB::table('settings')->where('key', 'company')->update(['value' => Input::get('company')]);
         DB::table('settings')->where('key', 'receiptHeader')->update(['value' => Input::get('receiptHeader')]);
+        DB::table('settings')->where('key', 'pinCode')->update(['value' => Input::get('pinCode')]);
         $ret = DB::table('settings')->get();
         $data['company'] = $ret[2]->value;
         $data['receiptHeader'] = $ret[3]->value;
