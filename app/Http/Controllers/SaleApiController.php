@@ -51,6 +51,7 @@ class SaleApiController extends Controller
             $curData = $discount->toArray();
             $originalItem = $discount->original;
             $curData['name']= $originalItem->name;
+            $curData['id'] = $discount->discount_id;
             $ret['discounts'][] = $curData;
         }
 
@@ -183,6 +184,11 @@ class SaleApiController extends Controller
 
         $ret = DB::table('settings')->where('key', 'pinCode')->first();
 
+        $sale = Sale::findOrFail($id);
+
+        if($sale->status == "done"){
+            return Response::json(array('success' => false, "message" => "You cannot update a complete sale"));
+        }
         if($data['pinCode'] != $ret->value){
             return Response::json(array('success' => false, "message" => 'Pin Code is not correct'));
         }
@@ -193,7 +199,7 @@ class SaleApiController extends Controller
         try {
             // Validate, then create if valid
             /* Storing Sale Information */
-            $sale = Sale::findOrFail($id);
+
             $sale->user_id      = Auth::user()->id;
             $sale->customer_id  = $data['customerId'] || NULL;
             $sale->service_type = $data['serviceType'];

@@ -47,15 +47,18 @@ class ReceiptController extends Controller
 
 
         $discountSum = 0.0;
+       // dd($data['discounts']);
         foreach($data['discounts'] as $key => $discount){
             $val = 0.0;
-
+            //dd($discount);
             if($discount['type'] == 1){ // %
                 $val = ($data['grossTotal'] * $discount['amount'])/100.0;
             }else{ // -
                 $val = ($discount['amount']);
             }
             $data['discounts'][$key]['name'] = Discount::find($discount['discount_id'])->name;
+
+            //dd($data['discounts'][$key]['name']);
             $data['discounts'][$key]['value'] = $val;
             $discountSum += $val;
         }

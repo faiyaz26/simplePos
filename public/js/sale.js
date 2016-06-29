@@ -49,6 +49,26 @@
         }
 
 
+        if(window.saleId != 0){
+            $http.get($scope.url+'/sales/'+window.saleId).success(function(data, status, headers, config){
+                $scope.sale = {
+                    saleItems : data.items,
+                    discounts    : data.discounts,
+                    customerId   : data.customer_id,
+                    serviceType  : data.service_type,
+                    paymentMode  : data.payment_mode,
+                    referenceNumber : data.reference_number,
+                    tableInfo    : data.table_info,
+                    comment      : data.comment,
+                    paid         : data.paid,
+                    status       : data.status
+                };
+                if(data.status == "done"){
+                    location.reload();
+                }
+            });
+        }
+
 
         $scope.refreshCustomerList = function () {
             $scope.test = "true";
@@ -83,22 +103,7 @@
             $scope.discountOptions = data;
         });
 
-        if(window.saleId != 0){
-            $http.get($scope.url+'/sales/'+window.saleId).success(function(data, status, headers, config){
-                $scope.sale = {
-                    saleItems : data.items,
-                    discounts    : data.discounts,
-                    customerId   : data.customer_id,
-                    serviceType  : data.service_type,
-                    paymentMode  : data.payment_mode,
-                    referenceNumber : data.reference_number,
-                    tableInfo    : data.table_info,
-                    comment      : data.comment,
-                    paid         : data.paid,
-                    status       : data.status
-                };
-            });
-        }
+
 
         $scope.customerListConfig = {
             create: false,
@@ -160,6 +165,7 @@
 
 
         $scope.addDiscount = function(discount){
+            console.log(discount);
             $scope.sale.discounts.push(angular.copy(discount));
             return;
         }
@@ -230,13 +236,41 @@
 
         $scope.completeSale = function(){
             if($scope.sale.saleItems.length == 0){
-                alert("No item added to the list, please add some");
+                prompt({
+                    "title": "Error",
+                    "message": "No item added to the list, please add some",
+                    "buttons": [
+                        {
+                            "label": "Ok",
+                            "cancel": true,
+                            "primary": true
+                        }
+                    ]
+                }).then(function(){
+                    //he hit ok and not cancel
+                    return;
+                });
                 return;
             }
 
 
             if($scope.getDue() < 0) {
-                alert("You cannot complete sale unless due amount is non negative, please click on hold button");
+              //  alert("You cannot complete sale unless due amount is non negative, please click on hold button");
+
+                prompt({
+                    "title": "Error",
+                    "message": "You cannot complete sale unless due amount is non negative, please click on Hold button",
+                    "buttons": [
+                        {
+                            "label": "Ok",
+                            "cancel": true,
+                            "primary": true
+                        }
+                    ]
+                }).then(function(){
+                    //he hit ok and not cancel
+                    return;
+                });
                 return;
             }
 
@@ -264,7 +298,7 @@
             }else{
                 prompt({
                     "title": "Confirmation",
-                    "message": "Please put the pin-code ?",
+                    "message": "If you are sure to complete the sale, Please put the pin-code ?",
                     "input": true,
                     "label": "Pin-code",
                     "value": "",
@@ -292,38 +326,70 @@
 
         $scope.holdSale = function(){
             if($scope.sale.saleItems.length == 0){
-                alert("No item added to the list, please add some");
+                prompt({
+                    "title": "Error",
+                    "message": "No item added to the list, please add some",
+                    "buttons": [
+                        {
+                            "label": "Ok",
+                            "cancel": true,
+                            "primary": true
+                        }
+                    ]
+                }).then(function(){
+                    //he hit ok and not cancel
+                    return;
+                });
                 return;
             }
 
-/*
-            if($scope.getDue() < 0) {
-                alert("You cannot complete sale unless due amount is non negative, please click on hold button");
-                return;
+
+
+            if(window.saleId == 0){
+                prompt({
+                    "title": "Confirmation",
+                    "message": "Are you sure to hold the sale ?",
+                    "buttons": [
+                        {
+                            "label": "Yes",
+                            "cancel": false,
+                            "primary": true
+                        },
+                        {
+                            "label": "No",
+                            "cancel": true,
+                            "primary": false
+                        }
+                    ]
+                }).then(function(){
+                    //he hit ok and not cancel
+                    $scope.storeSaleData();
+                });
+            }else{
+                prompt({
+                    "title": "Confirmation",
+                    "message": "If you are sure to hold the sale, Please put the pin-code ?",
+                    "input": true,
+                    "label": "Pin-code",
+                    "value": "",
+                    "buttons": [
+                        {
+                            "label": "Submit",
+                            "cancel": false,
+                            "primary": true
+                        },
+                        {
+                            "label": "Cancel",
+                            "cancel": true,
+                            "primary": false
+                        }
+                    ]
+                }).then(function(pinCode){
+                    //he hit ok and not cancel
+                    $scope.sale.pinCode = pinCode;
+                    $scope.storeSaleData();
+                });
             }
-*/
-
-            prompt({
-                "title": "Confirmation",
-                "message": "Are you sure to hold the sale ?",
-                "buttons": [
-                    {
-                        "label": "Yes",
-                        "cancel": false,
-                        "primary": true
-                    },
-                    {
-                        "label": "No",
-                        "cancel": true,
-                        "primary": false
-                    }
-                ]
-            }).then(function(){
-                //he hit ok and not cancel
-                $scope.storeSaleData();
-            });
-
-
 
             return;
         }
