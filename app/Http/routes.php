@@ -42,6 +42,8 @@ Route::group(['middleware' => 'language'], function()
 
     Route::resource('sales', 'SaleController');
 
+    Route::resource('reports', 'ReportController');
+
 
     Route::group(['prefix' => 'api/v1'], function () {
         Route::resource('items', 'ItemApiController');

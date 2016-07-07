@@ -6,12 +6,53 @@
  * Time: 1:54 AM
  */
 namespace App;
-
+use \DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Sale extends Model {
     use SoftDeletes;
     protected $table = 'sales';
+
+    public function getSaleInfoOnADay($date = null){
+        if($date == null){
+            $date = date("Y-m-d");
+        }
+
+        $sales = $this->where( DB::raw('DATE(created_at)'), '=', $date)->get();
+
+
+        $ret = [];
+
+        $ret['date'] = new \DateTime($date);
+        $ret['saleCount'] = $sales->count();
+        $ret['saleItemCount'] = 0;
+        $ret['drinksItemCount'] = 0;
+        $ret['mainCourseCount'] = 0;
+        $ret['saleAmount'] = 0.0;
+        $ret['saleProfit'] = 0.0;
+        $ret['salePaymentReceived'] = 0.0;
+
+        foreach($sales as $sale){
+            $ret['saleItemCount'] += $sale->items->count();
+            $ret['saleAmount'] += $sale->saleAmountWithCharge();
+            $ret['salePaymentReceived'] += $sale->paid;
+            $ret['drinksItemCount'] += $sale->categoryItemCount('drinks');
+            $ret['mainCourseCount'] += $sale->categoryItemCount('main_course');
+            $ret['saleProfit'] += ($sale->getTotalPrice() - $sale->getTotalCost());
+        }
+
+        return $ret;
+    }
+
+    public function categoryItemCount($value = ''){
+        return $this->items->sum(function($item) use (&$value){
+            //dd($item->original());
+            if(Item::find( $item->item_id )->category  == $value){
+                return 1;
+            }
+            return 0;
+        });
+    }
 
     public function items(){
         return $this->hasMany('App\SaleItem');

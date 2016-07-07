@@ -65,7 +65,8 @@ class DashboardController extends Controller {
         if(Input::has('date')) {
             $date = Input::get('date');
         }
-        $saleInfo = $this->getSaleInfoOnADay($date);
+        $sale = new Sale;
+        $saleInfo = $sale->getSaleInfoOnADay($date);
         $saleInfo['date'] = $date;
         return view('home')->with('saleInfo', $saleInfo);
     }
