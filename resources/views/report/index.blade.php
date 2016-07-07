@@ -79,6 +79,20 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="col-md-2">Sum</td>
+                                                    <td class="col-md-1">{{ array_sum(array_column($data['sales'],'saleCount')) }}</td>
+                                                    <td class="col-md-1">{{ array_sum(array_column($data['sales'],'saleItemCount')) }}</td>
+                                                    <td class="col-md-1">{{ array_sum(array_column($data['sales'],'drinksItemCount')) }}</td>
+                                                    <td class="col-md-1">{{ array_sum(array_column($data['sales'],'mainCourseCount')) }}</td>
+                                                    <td class="col-md-1">{{ array_sum(array_column($data['sales'],'saleAmount')) }}</td>
+                                                    <td class="col-md-1">{{ array_sum(array_column($data['sales'],'saleProfit')) }}</td>
+                                                    <td class="col-md-1">{{ array_sum(array_column($data['sales'],'salePaymentReceived')) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
                                     </div>
                                 </div>
