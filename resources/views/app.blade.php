@@ -69,6 +69,7 @@
 						</li>
 						-->
 						<li><a href="{{ url('/users') }}">{{trans('menu.users')}}</a></li>
+						<li><a href="{{ url('/reports') }}">Reports</a></li>
 					@endif
 				</ul>
 
